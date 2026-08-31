@@ -1,0 +1,31 @@
+---
+description: Documentation — self-documenting names, JSDoc on exports, no stale comments
+alwaysApply: true
+---
+
+# Documentation
+
+- Prefer descriptive names over comments (`getVehicleById`, not `getData`; `isDueForService`, not `check`).
+- Comments explain WHY, never WHAT. Document workarounds, trade-offs, browser quirks, and ticket links.
+- Every exported function, class, and type gets a JSDoc/TSDoc covering purpose, params, return value, and thrown errors or edge cases.
+- Keep a README per feature module: what it does, how to use it, gotchas. Update it in the same change as the code.
+- When adding or changing an API route, update request/response shape, status codes, and auth in the same change.
+- Delete commented-out code. Version control is the archive.
+- Mark temporary work as `TODO(name): description` so it is searchable. Stale docs are worse than no docs.
+
+```ts
+// ❌ BAD
+// increment counter
+export function check(d: Data) { return d.n > 0; }
+
+// ✅ GOOD
+/**
+ * Returns whether a vehicle is due for service.
+ * @param vehicle - Vehicle with last service date and interval days
+ * @returns true when the service interval has elapsed
+ */
+export function isDueForService(vehicle: Vehicle): boolean {
+  // Fleet policy uses calendar days, not business days — matches ops handbook §4.2
+  return daysSince(vehicle.lastServicedAt) >= vehicle.serviceIntervalDays;
+}
+```

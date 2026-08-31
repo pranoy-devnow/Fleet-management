@@ -1,0 +1,28 @@
+---
+description: Testing — unit tests with business logic, AAA, no implementation coupling
+alwaysApply: true
+---
+
+# Testing
+
+- Every new function with business logic ships with unit tests in the same change. Bug fixes ship with a regression test that fails without the fix.
+- Test behavior, not implementation. Assert on outputs and observable effects, never private internals.
+- Cover three cases per unit: happy path, edge cases (empty, null, boundary, unicode, large inputs), and failure modes.
+- Test names describe scenario and expectation: `returns 404 when vehicle does not exist`, not `test vehicle 2`.
+- Arrange–Act–Assert. One logical assertion focus per test. If the name needs "and", split it.
+- Mock external dependencies (network, DB, clock, randomness) at the boundary. Never mock the code under test. Prefer injected test doubles over module patching.
+- Tests must be deterministic and independent: no shared mutable state, no order dependence, no real timers or network.
+- Keep unit tests fast. Real infrastructure belongs in a separate integration suite, not the default unit run.
+
+```ts
+// ❌ BAD
+it("test service 2", () => {
+  expect(vehicleService["interval"]).toBe(90);
+});
+
+// ✅ GOOD
+it("returns true when the service interval has elapsed", () => {
+  const vehicle = makeVehicle({ lastServicedAt: daysAgo(91), serviceIntervalDays: 90 });
+  expect(isDueForService(vehicle)).toBe(true);
+});
+```

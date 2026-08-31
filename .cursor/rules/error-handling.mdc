@@ -1,0 +1,32 @@
+---
+description: Error handling and validation — fail fast, typed errors, never swallow
+alwaysApply: true
+---
+
+# Error Handling & Validation
+
+- Never swallow errors. Empty `catch` blocks are forbidden — handle, log with context, or rethrow with context.
+- Fail fast: validate at system boundaries (API handlers, forms, external data) with schema validation (Zod), not ad-hoc checks.
+- Log messages must be actionable: what failed, why, and identifiers. Never log generic "Something went wrong".
+- Distinguish expected errors (validation, not-found) from unexpected ones (bugs, outages). Typed results or specific error classes for expected cases; unexpected errors go to a central handler.
+- Every async operation has explicit error handling. No floating promises.
+- External calls (HTTP, DB, file I/O) always have timeouts and, where appropriate, retries with backoff.
+- Never expose internals (stack traces, SQL, file paths) in user-facing errors or API responses.
+- Clean up resources in `finally` or language idioms so failures do not leak handles.
+
+```ts
+// ❌ BAD
+try {
+  await fetchVehicle(id);
+} catch {}
+
+// ✅ GOOD
+try {
+  const parsed = VehicleIdSchema.parse(id);
+  return await vehicleRepository.getById(parsed, { timeoutMs: 5_000 });
+} catch (error) {
+  if (error instanceof VehicleNotFoundError) return { ok: false, code: "not_found" };
+  logger.error(`Failed to load vehicle ${id}: ${errorMessage(error)}`);
+  throw new VehicleLoadError(`Failed to load vehicle ${id}`, { cause: error });
+}
+```

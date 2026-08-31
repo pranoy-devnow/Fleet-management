@@ -1,0 +1,28 @@
+---
+description: Modular design — SRP, feature folders, composition, no circular deps
+alwaysApply: true
+---
+
+# Modular Design
+
+- Single Responsibility: if a function needs "and" to describe it, split it.
+- Keep functions under ~40 lines and files under ~300 lines. Propose a refactor before adding more.
+- Depend on abstractions, not implementations. Business logic never imports UI. Isolate data access behind a repository/service layer.
+- Organize by feature, not by type (`features/vehicles/` with components, hooks, services — not global `utils/` dumping grounds).
+- No circular dependencies. If two modules need each other, extract shared logic into a third.
+- Prefer composition over inheritance. Max 1 inheritance level.
+- Extract magic numbers and repeated strings into named constants.
+- Before duplicating logic a third time, extract a shared utility (rule of three).
+
+```ts
+// ❌ BAD — mixed concerns, type-based dump
+// src/utils/helpers.ts + src/components/VehicleStuff.tsx
+export function loadAndFormatVehicles() { /* fetch + UI mapping */ }
+
+// ✅ GOOD — feature module, one job each
+// features/vehicles/services/vehicle-repository.ts
+export async function getVehicles(): Promise<Vehicle[]> { /* data only */ }
+
+// features/vehicles/lib/format-vehicle.ts
+export function formatVehicleLabel(vehicle: Vehicle): string { /* mapping only */ }
+```
