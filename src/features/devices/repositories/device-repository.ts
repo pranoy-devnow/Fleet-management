@@ -1,6 +1,7 @@
 import { ASSIGNED_DEVICES, NEWLY_REGISTERED_DEVICE } from "../data/assigned-devices";
 import { WORLD_DEVICES } from "../data/world-devices";
-import type { AssignedDevice, WorldDevice } from "../types";
+import { formatRegionLabel } from "../lib/format-region";
+import type { AssignedDevice, DeviceCountry, WorldDevice } from "../types";
 
 /**
  * Returns a copy of the global fleet. Callers must not mutate the result.
@@ -40,6 +41,28 @@ export function listPostRegistrationDevices(): AssignedDevice[] {
  */
 export function listHospitals(): string[] {
   return [...new Set(WORLD_DEVICES.map((device) => device.hospital))].sort();
+}
+
+/**
+ * Countries the fleet operates in, for the device registration location picker.
+ *
+ * Sorted A–Z because the picker is scanned by name; its search covers people
+ * who think in regions instead.
+ *
+ * @returns One entry per country, with its region label
+ */
+export function listDeviceCountries(): DeviceCountry[] {
+  const byCountry = new Map<string, DeviceCountry>();
+
+  for (const device of WORLD_DEVICES) {
+    if (byCountry.has(device.country)) continue;
+    byCountry.set(device.country, {
+      country: device.country,
+      regionLabel: formatRegionLabel(device.region),
+    });
+  }
+
+  return [...byCountry.values()].sort((a, b) => a.country.localeCompare(b.country));
 }
 
 /**

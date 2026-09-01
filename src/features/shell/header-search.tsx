@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { StatusChip } from "@/features/devices/components/status-chip";
 import { listAssignedDevices, listWorldDevices } from "@/features/devices/repositories/device-repository";
 import { searchAssignedDevices, searchWorldDevices } from "@/features/search/lib/search-devices";
+import { SearchInputRow } from "@/features/shell/search-input-row";
 import { useDismiss } from "@/features/shell/use-dismiss";
 
 /**
@@ -52,17 +53,13 @@ export function HeaderSearch() {
 
       {open ? (
         <div className="absolute top-0 right-0 left-0 z-50 overflow-hidden rounded-2xl bg-white/95 shadow-[0_8px_40px_rgba(0,0,0,0.12)] ring-1 ring-black/8 backdrop-blur-xl">
-          <div className="flex items-center gap-2 border-b border-black/6 px-3.5 py-2">
-            <Search size={15} className="shrink-0 text-muted-foreground" />
-            <input
-              id={inputId}
-              ref={inputRef}
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Device, city, or hospital"
-              className="h-8 w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-            />
-          </div>
+          <SearchInputRow
+            id={inputId}
+            inputRef={inputRef}
+            value={query}
+            onChange={setQuery}
+            placeholder="Device, city, or hospital"
+          />
           <SearchResults query={query} isBiomed={isBiomed} results={results} onPick={close} />
         </div>
       ) : null}

@@ -2,7 +2,7 @@ import { BrandMark } from "@/features/shell/brand-mark";
 import { Panel } from "@/features/shell/panel";
 
 /**
- * Centered login/register frame with the Kingfisher wordmark.
+ * Centered login/register frame with the Medela wordmark.
  */
 export function AuthShell({ children }: { children: React.ReactNode }) {
   return (
@@ -12,7 +12,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
           <div className="mb-3">
             <BrandMark size="md" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground">Kingfisher</h1>
+          <h1 className="text-2xl font-bold text-foreground">Medela</h1>
           <p className="text-sm text-muted-foreground">Fleet Management Portal</p>
         </div>
         <Panel className="p-8">{children}</Panel>

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Kingfisher "K" mark used on auth screens and the app header.
+ * Medela "M" mark used on auth screens and the app header.
  */
 export function BrandMark({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const box = {
@@ -12,7 +12,7 @@ export function BrandMark({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
 
   return (
     <div className={cn("flex items-center justify-center bg-primary text-primary-foreground font-bold", box)}>
-      K
+      M
     </div>
   );
 }

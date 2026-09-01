@@ -6,18 +6,30 @@ import { cn } from "@/lib/utils";
 
 /**
  * Settings-style grouped list surface.
+ *
+ * @param footer - Optional count or hint under the rows
+ * @param scroll - When true, rows scroll inside the panel and the footer stays
+ *   visible. Use on `AppShell fill` pages so only the list moves.
  */
 export function GroupedList({
   children,
   footer,
+  scroll = false,
 }: {
   children: React.ReactNode;
   footer?: React.ReactNode;
+  scroll?: boolean;
 }) {
   return (
-    <Panel className="overflow-hidden">
-      <div className="divide-y divide-black/6">{children}</div>
-      {footer ? <div className="border-t border-black/6 px-5 py-3 text-xs text-muted-foreground">{footer}</div> : null}
+    <Panel className={cn("overflow-hidden", scroll && "flex min-h-0 flex-1 flex-col")}>
+      <div className={cn("divide-y divide-black/6", scroll && "min-h-0 flex-1 overflow-y-auto")}>
+        {children}
+      </div>
+      {footer ? (
+        <div className="shrink-0 border-t border-black/6 px-5 py-3 text-xs text-muted-foreground">
+          {footer}
+        </div>
+      ) : null}
     </Panel>
   );
 }

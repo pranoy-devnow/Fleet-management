@@ -6,7 +6,7 @@ export default function BiomedWelcomePage() {
   const devices = listPostRegistrationDevices();
 
   return (
-    <AppShell title="My Devices" subtitle="Registration complete — welcome to Kingfisher">
+    <AppShell title="My Devices" subtitle="Registration complete — welcome to Medela">
       <div className="max-w-2xl">
         <div className="mb-4 rounded-lg border border-primary/20 bg-secondary px-4 py-3 text-sm text-primary">
           Your newly registered device appears here, along with any others assigned to your account.

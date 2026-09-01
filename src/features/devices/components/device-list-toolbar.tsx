@@ -74,7 +74,7 @@ export function DeviceListToolbar({
   }
 
   return (
-    <div className="mb-4 flex flex-col gap-3">
+    <div className="mb-4 flex shrink-0 flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
         <SearchField
           value={filters.search}

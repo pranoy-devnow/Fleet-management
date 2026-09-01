@@ -6,6 +6,8 @@ Fleet inventory, assigned-device lists, status chips, and the global map.
 
 - `listWorldDevices` / `getWorldDeviceById` — internal fleet map and table
 - `listAssignedDevices` / `getAssignedDeviceById` — biomed dashboards
+- `listHospitals` — hospital filter options
+- `listDeviceCountries` + `searchDeviceCountries` — registration location picker
 - `filterWorldDevices` + `sortWorldDevices` — table and map filters
 - `StatusChip` — use anywhere a device status appears
 
@@ -18,6 +20,8 @@ Fleet inventory, assigned-device lists, status chips, and the global map.
 
 `DeviceListToolbar` composes the shell's search field, segmented control, filter menu, and sort menu. `DeviceListEmpty` turns a `suggestFilterRelaxation` result into a one-click way out.
 
+The device list page uses `AppShell fill` and a scrolling `GroupedList`, so the title, Overview link, and filter bar stay put.
+
 ## Gotchas
 
 - Status colors are fixed: amber needs-update, green updated, red failed.
@@ -25,3 +29,4 @@ Fleet inventory, assigned-device lists, status chips, and the global map.
 - Status is the visible segmented axis, so `describeDeviceFilters` deliberately omits it. Adding it would give one filter two controls.
 - `suggestFilterRelaxation` assumes the current result is empty; it only returns a removal that reveals at least one device, and ties go to the less intentional facet (search is suggested last).
 - Sample data is in-memory only.
+- Filter and sort menus sit outside the scrolling panel on purpose. A menu opened from a row inside `overflow-y-auto` would be clipped.

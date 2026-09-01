@@ -26,7 +26,7 @@ export function EmailPreview() {
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex gap-3">
                 <span className="w-14 text-[#9CA3AF]">From</span>
-                <span className="font-medium text-foreground">Kingfisher Fleet &lt;no-reply@medela.com&gt;</span>
+                <span className="font-medium text-foreground">Medela Fleet &lt;no-reply@medela.com&gt;</span>
               </div>
               <div className="flex gap-3">
                 <span className="w-14 text-[#9CA3AF]">To</span>
@@ -48,13 +48,13 @@ export function EmailPreview() {
               <li>KF-2023-00512 — NICU Ward 3 (Failed Update)</li>
             </ul>
             <p className="mb-6 text-sm leading-relaxed text-[#374151]">
-              Please sign in to the Kingfisher Fleet Portal to review and apply the update at your earliest convenience.
+              Please sign in to the Medela Fleet Portal to review and apply the update at your earliest convenience.
             </p>
             <Button render={<Link href="/login/biomed" />} className="h-auto rounded-[6px] px-5 py-2.5">
               Sign In &amp; Update Now
             </Button>
             <p className="mt-6 text-xs text-[#9CA3AF]">
-              Kingfisher Fleet Management Portal · Medela AG · Theilerstrasse 1, 6300 Zug, Switzerland
+              Medela Fleet Management Portal · Medela AG · Theilerstrasse 1, 6300 Zug, Switzerland
               <br />
               This is an automated message. Please do not reply directly to this email.
             </p>

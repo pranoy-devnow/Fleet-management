@@ -3,13 +3,12 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { AmberCallout } from "@/features/shell/amber-callout";
 import { AuthShell } from "@/features/shell/auth-shell";
 import { FormField } from "@/features/shell/form-field";
 import { NativeSelect } from "@/features/shell/native-select";
 
 /**
- * First-time Medela account form. Prototype: Create Account continues with empty fields.
+ * First-time Medela access request. Prototype: the button continues with empty fields.
  */
 export function MedelaRegisterForm() {
   const router = useRouter();
@@ -24,7 +23,6 @@ export function MedelaRegisterForm() {
       <h2 className="mb-1 text-xl font-bold text-foreground">Create Account</h2>
       <p className="mb-5 text-sm text-muted-foreground">Register your Medela internal account</p>
       <form className="flex flex-col gap-4" onSubmit={onSubmit} noValidate>
-        <AmberCallout>Open question: is account creation self-serve or admin-provisioned?</AmberCallout>
         <FormField label="Full name" name="fullName" placeholder="Sarah Chen" />
         <FormField label="Work email" name="email" type="email" placeholder="name@medela.com" />
         <NativeSelect
@@ -40,8 +38,9 @@ export function MedelaRegisterForm() {
           ]}
         />
         <FormField label="Password" name="password" type="password" placeholder="••••••••" />
-        <Button type="submit" className="mt-1 h-auto w-full rounded-[6px] py-2.5">Create Account</Button>
-        <p className="text-center text-xs text-[#9CA3AF]">Prototype — credentials not required</p>
+        <Button type="submit" className="mt-1 h-auto w-full rounded-[6px] py-2.5">
+          Request for Access
+        </Button>
       </form>
     </AuthShell>
   );

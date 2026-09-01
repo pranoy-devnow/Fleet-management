@@ -1,6 +1,6 @@
 /**
  * Simplified continent outlines in the 2000×1000 map viewBox.
- * Paths come from the Kingfisher Figma Make prototype.
+ * Paths come from the Medela Figma Make prototype.
  */
 export const CONTINENT_PATHS = [
   "M 67,133 L 139,111 L 222,111 L 444,83 L 640,222 L 640,256 L 610,267 L 556,360 L 517,411 L 500,411 L 417,372 L 344,317 L 317,244 L 233,183 L 139,167 L 83,167 Z",

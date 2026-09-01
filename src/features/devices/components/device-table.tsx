@@ -52,6 +52,7 @@ export function DeviceTable({ initialStatus }: { initialStatus: string }) {
     <AppShell
       title={DEVICE_LIST_TITLES[filters.status] ?? "Devices"}
       subtitle={listSubtitle(filters.status)}
+      fill
     >
       <BackLink href="/internal" label="Overview" />
       <DeviceListToolbar
@@ -67,6 +68,7 @@ export function DeviceTable({ initialStatus }: { initialStatus: string }) {
         }}
       />
       <GroupedList
+        scroll
         footer={
           <span role="status">
             {`Showing ${rows.length} of ${devices.length} devices${active ? " · filtered" : ""}`}

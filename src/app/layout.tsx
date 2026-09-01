@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kingfisher Fleet Management",
+  title: "Medela Fleet Management",
   description: "Connected breast pump fleet management portal for Medela staff and hospital biomeds.",
 };
 

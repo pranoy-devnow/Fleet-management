@@ -33,6 +33,16 @@ export type WorldDevice = {
 };
 
 /**
+ * A country the fleet operates in. Used as the location a biomed picks when
+ * registering a device, before naming their hospital.
+ */
+export type DeviceCountry = {
+  country: string;
+  /** Display label for the sales region, e.g. "North America". */
+  regionLabel: string;
+};
+
+/**
  * Filter values for the global fleet map and device table.
  */
 export type DeviceFilters = {

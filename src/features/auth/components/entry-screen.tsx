@@ -13,7 +13,7 @@ export function EntryScreen() {
         <div className="mb-4">
           <BrandMark size="lg" />
         </div>
-        <h1 className="text-4xl font-bold tracking-tight text-white">Kingfisher</h1>
+        <h1 className="text-4xl font-bold tracking-tight text-white">Medela</h1>
         <p className="mt-2 text-base text-[#94A3B8]">Fleet Management Portal</p>
       </div>
       <p className="mb-8 text-sm text-[#CBD5E1]">Choose your account type to continue</p>
