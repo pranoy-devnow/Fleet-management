@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronRight, Filter, Globe } from "lucide-react";
-import Link from "next/link";
+import { Filter, Globe } from "lucide-react";
 
 import { DeviceStatusModal } from "@/features/devices/components/device-status-modal";
 import { FleetMapCanvas } from "@/features/devices/components/fleet-map-canvas";
@@ -46,7 +45,7 @@ export function DashboardFleetMap() {
 
   return (
     <Panel className="mb-6 overflow-hidden">
-      <div className="flex items-center justify-between border-b border-muted px-5 py-3">
+      <div className="flex items-center border-b border-muted px-5 py-3">
         <div className="flex items-center gap-2">
           <Globe size={16} className="text-primary" />
           <span className="text-sm font-semibold text-foreground">Global Fleet</span>
@@ -54,9 +53,6 @@ export function DashboardFleetMap() {
             — {visible.length} of {devices.length} devices
           </span>
         </div>
-        <Link href="/internal/map" className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
-          View full map <ChevronRight size={13} />
-        </Link>
       </div>
 
       <div className="flex flex-wrap items-center gap-2 border-b border-muted bg-[#FAFBFC] px-5 py-2.5">

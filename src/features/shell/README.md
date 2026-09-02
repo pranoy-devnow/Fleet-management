@@ -29,7 +29,7 @@ Filterable lists compose one row from these parts, in this order:
 ## Gotchas
 
 - Logo goes to the role home (`/internal` or `/biomed`), not the role picker.
-- The header avatar opens Profile, Role management, and Log out. Log out still goes to `/`.
+- The header avatar opens Profile and Log out. Internal users also get Role management. Log out still goes to `/`.
 - `SegmentedControl` and `FilterMenu` are built on native radio inputs, so arrow keys navigate and the selected state is announced. Each instance scopes its own `name` via `useId`, so two controls on one page never share a group.
 - Keep a facet in either `SegmentedControl` or `FilterMenu`, never both — one filter, one UI path. `ActiveFilterChips` therefore skips the segmented axis, since that control already shows its own state.
 - `FilterMenu` renders the `all` option as a bare "All"; the section heading already names the facet.

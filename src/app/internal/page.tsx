@@ -9,8 +9,6 @@ import { AppShell } from "@/features/shell/app-shell";
 export default function InternalDashboardPage() {
   return (
     <AppShell
-      title="Overview"
-      subtitle="Welcome back, Sarah"
       headerAction={
         <Button
           render={<Link href="/internal/firmware/upload" />}

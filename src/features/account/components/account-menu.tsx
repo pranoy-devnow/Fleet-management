@@ -23,8 +23,9 @@ import { findRoleByEmail } from "@/features/users/lib/role-permissions";
 import { listMedelaUsers } from "@/features/users/repositories/user-repository";
 
 /**
- * Header account control: initials avatar that opens Profile, Role management,
- * and Log out. There is no real session, so Log out returns to the role picker.
+ * Header account control: initials avatar that opens Profile and Log out.
+ * Internal users also get Role management. There is no real session, so Log
+ * out returns to the role picker.
  *
  * Internal Admins see a notification badge for pending access requests. Opening
  * the menu repeats that same count next to Role management so the badge has a
@@ -76,10 +77,12 @@ export function AccountMenu() {
             <MenuLink href={accountProfileHref(portal)} onPick={() => setOpen(false)}>
               Profile
             </MenuLink>
-            <MenuLink href={accountRolesHref(portal)} onPick={() => setOpen(false)}>
-              <span>Role management</span>
-              <NotificationCount count={notificationCount} />
-            </MenuLink>
+            {portal === "internal" ? (
+              <MenuLink href={accountRolesHref(portal)} onPick={() => setOpen(false)}>
+                <span>Role management</span>
+                <NotificationCount count={notificationCount} />
+              </MenuLink>
+            ) : null}
             <div className="border-t border-black/6">
               <MenuLink href="/" onPick={() => setOpen(false)}>
                 Log out

@@ -6,7 +6,7 @@ export default function BiomedDashboardPage() {
   const devices = listAssignedDevices();
 
   return (
-    <AppShell title="My Devices" subtitle="Devices assigned to Dr. Marco Rossi · Charité Universitätsmedizin">
+    <AppShell title="My Devices">
       <div className="max-w-2xl">
         <AssignedDeviceList devices={devices} hrefFor={(device) => `/biomed/devices/${device.id}`} />
       </div>

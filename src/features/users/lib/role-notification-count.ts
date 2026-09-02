@@ -4,7 +4,7 @@ import { hasPermission } from "./role-permissions";
 import type { PlatformRole } from "../types";
 
 /**
- * How many role-management notifications the header should show.
+ * How many role-management notifications the Role management button should show.
  *
  * Only an internal Admin sees access-request notifications. Hospital staff
  * and IT viewers get zero, so the badge never advertises a queue they cannot

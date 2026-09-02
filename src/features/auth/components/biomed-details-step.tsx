@@ -76,7 +76,6 @@ export function BiomedDetailsStep({
         <Button type="submit" className="mt-1 h-auto w-full rounded-[6px] py-2.5">
           Register Device &amp; Create Account
         </Button>
-        <p className="text-center text-xs text-[#9CA3AF]">Prototype — credentials not required</p>
       </form>
     </div>
   );

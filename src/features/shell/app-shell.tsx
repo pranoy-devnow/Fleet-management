@@ -35,7 +35,7 @@ export function AppShell({
             : "mx-auto max-w-[1440px] px-8 py-10"
         }
       >
-        {(title || subtitle) && (
+        {(title || subtitle || headerAction) && (
           <div className="mb-8 flex shrink-0 items-end justify-between gap-4">
             <div>
               {title ? (
