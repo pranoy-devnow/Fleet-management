@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { BiomedDetailsStep } from "@/features/auth/components/biomed-details-step";
-import { DeviceLocationStep } from "@/features/auth/components/device-location-step";
+import { DeviceLocationStep } from "@/features/devices/components/device-location-step";
 import { listDeviceCountries } from "@/features/devices/repositories/device-repository";
 import type { DeviceCountry } from "@/features/devices/types";
 import { AuthShell } from "@/features/shell/auth-shell";

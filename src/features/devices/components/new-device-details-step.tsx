@@ -3,34 +3,36 @@
 import { ArrowLeft, MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { BIOMED_HOSPITAL, DEVICE_MODEL_CHOICES } from "@/features/devices/constants";
 import type { DeviceCountry } from "@/features/devices/types";
 import { FormField } from "@/features/shell/form-field";
 import { NativeSelect } from "@/features/shell/native-select";
 import { StepHeading } from "@/features/shell/step-heading";
 
-const MODEL_OPTIONS: Array<[string, string]> = [
-  ["", "Select model…"],
-  ["Freestyle Hands-free", "Freestyle Hands-free"],
-  ["Symphony", "Symphony"],
-  ["Swing Maxi", "Swing Maxi"],
-];
-
 /**
- * Second registration step: account and device details for an already-chosen
- * country.
+ * Second step of adding a device to an existing account: the device itself.
+ *
+ * No personal or account fields — the biomed is already signed in, so the
+ * hospital is shown read-only rather than asked for again.
  *
  * @param country - Country picked in step one, shown read-only with a way back
+ * @param error - Message from a rejected submit, e.g. a serial already registered
  * @param onBack - Returns to the location step so the choice can be changed
  * @param onSubmit - Form submit handler
+ * @param titleId - Optional id for the heading, so a dialog can label itself with it
  */
-export function BiomedDetailsStep({
+export function NewDeviceDetailsStep({
   country,
+  error,
   onBack,
   onSubmit,
+  titleId,
 }: {
   country: DeviceCountry;
+  error: string | null;
   onBack: () => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  titleId?: string;
 }) {
   return (
     <div>
@@ -45,8 +47,9 @@ export function BiomedDetailsStep({
 
       <StepHeading
         step={2}
-        title="Your details"
-        subtitle="Create your account and register the device"
+        title="Device details"
+        subtitle="Tell us which unit you are adding and where it sits"
+        titleId={titleId}
       />
 
       <div className="mb-5 flex items-center gap-3 rounded-xl bg-black/[0.03] px-4 py-3">
@@ -60,21 +63,26 @@ export function BiomedDetailsStep({
       <form className="flex flex-col gap-4" onSubmit={onSubmit} noValidate>
         {/* Carries the step-one choice into the submitted form data. */}
         <input type="hidden" name="country" value={country.country} />
-        <FormField label="Full name" name="fullName" placeholder="Dr. Marco Rossi" />
-        <FormField label="Email" name="email" type="email" placeholder="bioeng@charite.de" />
-        <FormField label="Phone" name="phone" type="tel" placeholder="+49 30 450 5000" />
-        <FormField
-          label="Hospital / Facility"
-          name="hospital"
-          placeholder="Charité Universitätsmedizin"
-        />
-        <div className="grid grid-cols-2 gap-3">
-          <FormField label="Device serial number" name="serial" placeholder="KF-2024-01234" />
-          <NativeSelect label="Model" name="model" defaultValue="" options={MODEL_OPTIONS} />
+
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm font-semibold text-foreground">Hospital / Facility</span>
+          <p className="text-sm text-muted-foreground">
+            {BIOMED_HOSPITAL} — from your account
+          </p>
         </div>
-        <FormField label="Password" name="password" type="password" placeholder="••••••••" />
+
+        <FormField label="Device serial number" name="serial" placeholder="KF-2024-01234" />
+        <NativeSelect label="Model" name="model" defaultValue="" options={DEVICE_MODEL_CHOICES} />
+        <FormField label="Ward" name="ward" placeholder="NICU Ward 4" />
+
+        {error ? (
+          <p role="alert" className="text-sm font-medium text-[#D32F27]">
+            {error}
+          </p>
+        ) : null}
+
         <Button type="submit" className="mt-1 h-auto w-full rounded-[6px] py-2.5">
-          Register Device &amp; Create Account
+          Add device
         </Button>
       </form>
     </div>

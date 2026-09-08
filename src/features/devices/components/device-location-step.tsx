@@ -4,14 +4,15 @@ import { useId, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { AuthStepHeading } from "@/features/auth/components/auth-step-heading";
 import { searchDeviceCountries } from "@/features/devices/lib/search-countries";
 import type { DeviceCountry } from "@/features/devices/types";
 import { SearchableListPanel } from "@/features/shell/searchable-list-panel";
+import { StepHeading } from "@/features/shell/step-heading";
 import { cn } from "@/lib/utils";
 
 /**
- * First registration step: pick the country the device is in.
+ * First step of any device flow: pick the country the device is in. Shared by
+ * biomed registration and adding a device to an existing account.
  *
  * Search is the first row of the list panel — the same row the header search
  * popover uses — so typing a country or region is faster than scrolling.
@@ -20,17 +21,20 @@ import { cn } from "@/lib/utils";
  * @param selected - Currently chosen country, or null before a first choice
  * @param onSelect - Receives the chosen country
  * @param onNext - Advances to the details step; only reachable once one is chosen
+ * @param titleId - Optional id for the heading, so a dialog can label itself with it
  */
 export function DeviceLocationStep({
   countries,
   selected,
   onSelect,
   onNext,
+  titleId,
 }: {
   countries: readonly DeviceCountry[];
   selected: DeviceCountry | null;
   onSelect: (country: DeviceCountry) => void;
   onNext: () => void;
+  titleId?: string;
 }) {
   const [query, setQuery] = useState("");
   const groupName = useId();
@@ -38,10 +42,11 @@ export function DeviceLocationStep({
 
   return (
     <div className="flex flex-col gap-4">
-      <AuthStepHeading
+      <StepHeading
         step={1}
         title="Where is the device?"
         subtitle="Choose the country this device is installed in"
+        titleId={titleId}
       />
 
       <SearchableListPanel

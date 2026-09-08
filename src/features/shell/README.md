@@ -6,7 +6,7 @@ Shared chrome: frosted header, grouped lists, list filter controls, auth frame, 
 
 Wrap authenticated pages in `AppShell`. Use `variant="form"` on firmware publish/edit to show the sign-off card. Use `fill` on list pages so the title stays put and only `GroupedList` with `scroll` moves.
 
-The header search pill filters devices. On `/biomed` it searches assigned devices; elsewhere it searches the global fleet.
+The header search pill filters devices. Under `/biomed` it searches the biomed's live device list through `useAssignedDevices`, so a device added this session is findable; elsewhere it searches the global fleet.
 
 ### List toolbars
 
@@ -21,10 +21,16 @@ Filterable lists compose one row from these parts, in this order:
 
 `PopoverSurface` is the floating panel shared by the header search and both menus. `useDismiss` gives any popover outside-press and Escape handling.
 
+### Dialogs
+
+- `ModalOverlay` — scrim, centered dialog, `role="dialog"`, and `useDismiss`. Children supply their own surface, since a form card and a detail card look nothing alike.
+- `ConfirmDialog` — destructive confirm built on it. Cancel comes first and is the safe default.
+
 ### Searchable lists and tooltips
 
 - `SearchableListPanel` — `SearchInputRow` on a hairline above a list. Used by the registration country picker (`h-72`, scrolling) and the user directory (`scroll={false}`).
 - `InfoTooltip` — info icon on base-ui's tooltip. Opens on hover and on keyboard focus.
+- `StepHeading` — "Step N of M" progress plus title and subtitle for multi-step forms. Used by biomed registration and the add-device dialog. Pass `titleId` when a dialog labels itself with the heading.
 
 ## Gotchas
 

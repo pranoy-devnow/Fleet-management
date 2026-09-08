@@ -6,7 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { StatusChip } from "@/features/devices/components/status-chip";
-import { listAssignedDevices, listWorldDevices } from "@/features/devices/repositories/device-repository";
+import { useAssignedDevices } from "@/features/devices/hooks/use-assigned-devices";
+import { biomedDeviceHref } from "@/features/devices/lib/device-hrefs";
+import { listWorldDevices } from "@/features/devices/repositories/device-repository";
 import { searchAssignedDevices, searchWorldDevices } from "@/features/search/lib/search-devices";
 import { SearchInputRow } from "@/features/shell/search-input-row";
 import { useDismiss } from "@/features/shell/use-dismiss";
@@ -22,11 +24,13 @@ export function HeaderSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const rootRef = useDismiss(open, close);
+  // Read the live list, not the fixtures, so a device added this session is findable.
+  const { devices: assignedDevices } = useAssignedDevices();
 
   const results = useMemo(() => {
-    if (isBiomed) return searchAssignedDevices(listAssignedDevices(), query);
+    if (isBiomed) return searchAssignedDevices(assignedDevices, query);
     return searchWorldDevices(listWorldDevices(), query);
-  }, [isBiomed, query]);
+  }, [assignedDevices, isBiomed, query]);
 
   function openSearch() {
     setOpen(true);
@@ -91,7 +95,11 @@ function SearchResults({
       {results.map((device) => (
         <li key={device.id}>
           <Link
-            href={isBiomed ? `/biomed/devices/${device.id}` : `/internal/devices/${device.id}`}
+            href={
+              isBiomed
+                ? biomedDeviceHref(device.id, "update")
+                : `/internal/devices/${device.id}`
+            }
             onClick={onPick}
             className="flex items-center justify-between gap-3 px-4 py-2.5 hover:bg-black/4"
           >

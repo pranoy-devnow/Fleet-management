@@ -59,6 +59,16 @@ export const MODEL_OPTIONS = [
   ["Swing Maxi", "Swing Maxi"],
 ] as const;
 
+/**
+ * Model choices for a form that registers one device, derived from the filter
+ * list so a new model only has to be added in one place. The leading `all`
+ * filter entry becomes an empty placeholder.
+ */
+export const DEVICE_MODEL_CHOICES: ReadonlyArray<readonly [string, string]> = [
+  ["", "Select model…"],
+  ...MODEL_OPTIONS.slice(1),
+];
+
 export const DEVICE_LIST_TITLES: Record<string, string> = {
   all: "All Devices",
   updated: "Updated Devices",
@@ -77,3 +87,15 @@ export const FLEET_STATS = {
 export const AVAILABLE_FIRMWARE = "v2.4.0";
 export const LAST_SYNC_EXAMPLE = "2025-12-18 · 09:42 UTC";
 export const ASSIGNED_BIOMED = "Dr. Marco Rossi · bioeng@charite.de";
+
+/** Hospital the prototype biomed account belongs to. */
+export const BIOMED_HOSPITAL = "Charité";
+
+/** Model shown for fixture devices, which predate recording a model per device. */
+export const DEFAULT_DEVICE_MODEL = "Freestyle Hands-free";
+
+/**
+ * Firmware a device ships with. Units leave the factory a release behind
+ * `AVAILABLE_FIRMWARE`, so a freshly added device starts as needs-update.
+ */
+export const NEW_DEVICE_FIRMWARE = "v2.3.1";

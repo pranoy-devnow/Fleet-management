@@ -1,11 +1,13 @@
 "use client";
 
+import { useId } from "react";
 import { X } from "lucide-react";
 
 import { StatusChip } from "@/features/devices/components/status-chip";
 import { AVAILABLE_FIRMWARE, LAST_SYNC_EXAMPLE, ASSIGNED_BIOMED } from "@/features/devices/constants";
 import { formatRegionLabel } from "@/features/devices/lib/format-region";
 import type { WorldDevice } from "@/features/devices/types";
+import { ModalOverlay } from "@/features/shell/modal-overlay";
 
 /**
  * Modal opened from the dashboard map when a pin is selected.
@@ -17,6 +19,7 @@ export function DeviceStatusModal({
   device: WorldDevice;
   onClose: () => void;
 }) {
+  const titleId = useId();
   const rows: Array<[string, string, boolean?]> = [
     ["Model", `Medela ${device.model}`],
     ["Firmware version", device.firmware],
@@ -29,15 +32,14 @@ export function DeviceStatusModal({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
-      <div
-        className="mx-4 w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl"
-        onClick={(event) => event.stopPropagation()}
-      >
+    <ModalOverlay labelledBy={titleId} onDismiss={onClose}>
+      <div className="overflow-hidden rounded-xl bg-white shadow-2xl">
         <div className="flex items-start justify-between border-b border-muted px-6 py-5">
           <div>
             <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#9CA3AF]">Device Status</div>
-            <h2 className="text-xl font-bold text-foreground">{device.id}</h2>
+            <h2 id={titleId} className="text-xl font-bold text-foreground">
+              {device.id}
+            </h2>
             <p className="mt-0.5 text-sm text-muted-foreground">
               {device.city}, {device.country}
             </p>
@@ -67,6 +69,6 @@ export function DeviceStatusModal({
           </div>
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

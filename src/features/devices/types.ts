@@ -14,6 +14,10 @@ export type AssignedDevice = {
   status: DeviceStatus;
   firmware: string;
   isNew?: boolean;
+  /** Country the device is installed in. Only set for devices added in-app. */
+  country?: string;
+  /** Pump model. Only set for devices added in-app; older fixtures predate it. */
+  model?: string;
 };
 
 /**

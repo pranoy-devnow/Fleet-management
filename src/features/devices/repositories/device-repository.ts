@@ -21,19 +21,15 @@ export function getWorldDeviceById(id: string): WorldDevice | undefined {
 }
 
 /**
- * Devices assigned to the prototype biomed account (Dr. Rossi / Charité).
+ * Every device the prototype biomed account (Dr. Rossi / Charité) owns: the
+ * serial from first-time setup plus the rest of their fleet.
+ *
+ * This seeds `assignedDeviceStore`, which every biomed screen reads. Nothing
+ * queries these fixtures directly, so adding and removing devices cannot leave
+ * two screens disagreeing about what exists.
  */
-export function listAssignedDevices(): AssignedDevice[] {
-  return ASSIGNED_DEVICES.map((device) => ({ ...device }));
-}
-
-/**
- * Assigned devices plus the just-registered serial used after first-time setup.
- */
-export function listPostRegistrationDevices(): AssignedDevice[] {
-  return [NEWLY_REGISTERED_DEVICE, ...ASSIGNED_DEVICES.slice(0, 2)].map((device) => ({
-    ...device,
-  }));
+export function listBiomedDevices(): AssignedDevice[] {
+  return [NEWLY_REGISTERED_DEVICE, ...ASSIGNED_DEVICES].map((device) => ({ ...device }));
 }
 
 /**
@@ -63,14 +59,4 @@ export function listDeviceCountries(): DeviceCountry[] {
   }
 
   return [...byCountry.values()].sort((a, b) => a.country.localeCompare(b.country));
-}
-
-/**
- * Looks up an assigned device, falling back to the newly registered prototype device.
- */
-export function getAssignedDeviceById(id: string): AssignedDevice | undefined {
-  const fromAssigned = ASSIGNED_DEVICES.find((item) => item.id === id);
-  if (fromAssigned) return { ...fromAssigned };
-  if (id === NEWLY_REGISTERED_DEVICE.id) return { ...NEWLY_REGISTERED_DEVICE };
-  return undefined;
 }
