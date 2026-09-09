@@ -4,7 +4,7 @@ Shared chrome: brand-yellow header, grouped lists, list filter controls, auth fr
 
 ## How to use
 
-Wrap authenticated pages in `AppShell`. Use `variant="form"` on firmware publish/edit to show the sign-off card. Use `fill` on list pages so the title stays put and only `GroupedList` with `scroll` moves.
+Wrap authenticated pages in `AppShell`. Use `variant="form"` on firmware publish/edit to show the sign-off card. Use `fill` on list pages and the internal overview so chrome stays put and the list or map fills the leftover laptop height.
 
 The header search pill filters devices. Under `/biomed` it searches the biomed's live device list through `useAssignedDevices`, so a device added this session is findable; elsewhere it searches the global fleet.
 

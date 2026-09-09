@@ -12,6 +12,11 @@ type FleetMapCanvasProps = {
   onHover: (id: string | null) => void;
   onSelect?: (device: WorldDevice) => void;
   aspectClass?: string;
+  /**
+   * Stretch to the parent instead of using the padded aspect box. The dashboard
+   * uses this so the map fills leftover laptop height without page scroll.
+   */
+  fill?: boolean;
 };
 
 /**
@@ -24,9 +29,10 @@ export function FleetMapCanvas({
   onHover,
   onSelect,
   aspectClass = "pb-[38%]",
+  fill = false,
 }: FleetMapCanvasProps) {
   return (
-    <div className={`relative bg-map-water ${aspectClass}`}>
+    <div className={fill ? "relative h-full min-h-0 bg-map-water" : `relative bg-map-water ${aspectClass}`}>
       <svg
         className="absolute inset-0 size-full"
         viewBox={`0 0 ${MAP_VIEWBOX.width} ${MAP_VIEWBOX.height}`}

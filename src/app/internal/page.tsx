@@ -9,6 +9,7 @@ import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 export default function InternalDashboardPage() {
   return (
     <AppShell
+      fill
       headerAction={
         <PrimaryActionButton
           render={<Link href="/internal/firmware/upload" />}

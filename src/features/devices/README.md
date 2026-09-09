@@ -37,6 +37,8 @@ Adding a device goes through:
 
 The device list page uses `AppShell fill` and a scrolling `GroupedList`, so the title, Overview link, and filter bar stay put.
 
+The internal overview (`/internal`) also uses `fill`: stat cards stay compact and `DashboardFleetMap` stretches into the leftover height so a laptop viewport does not scroll.
+
 ## Gotchas
 
 - Status colors are fixed: amber needs-update, green updated, red failed.

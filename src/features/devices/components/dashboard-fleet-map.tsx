@@ -24,6 +24,9 @@ const emptyFilters: DeviceFilters = {
 
 /**
  * Inline global fleet map on the Medela internal dashboard.
+ *
+ * Fills the leftover viewport under the stat cards so a laptop does not have
+ * to scroll the overview.
  */
 export function DashboardFleetMap() {
   const devices = useMemo(() => listWorldDevices(), []);
@@ -44,8 +47,8 @@ export function DashboardFleetMap() {
   }
 
   return (
-    <Panel className="mb-6 overflow-hidden">
-      <div className="flex items-center border-b border-muted px-5 py-3">
+    <Panel className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="flex shrink-0 items-center border-b border-muted px-5 py-2.5">
         <div className="flex items-center gap-2">
           <Globe size={16} className="text-primary" />
           <span className="text-sm font-semibold text-foreground">Global Fleet</span>
@@ -55,7 +58,7 @@ export function DashboardFleetMap() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 border-b border-muted bg-muted px-5 py-2.5">
+      <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-muted bg-muted px-5 py-2">
         <Filter size={13} className="shrink-0 text-muted-foreground" />
         <NativeSelect compact highlightWhenSet label="Hospital" value={filters.hospital} onChange={(value) => update("hospital", value)} options={hospitals} />
         <NativeSelect compact highlightWhenSet label="Region" value={filters.region} onChange={(value) => update("region", value)} options={REGION_OPTIONS} />
@@ -68,14 +71,15 @@ export function DashboardFleetMap() {
         ) : null}
       </div>
 
-      <div className="flex">
-        <div className="min-w-0 flex-1">
+      <div className="flex min-h-0 flex-1">
+        <div className="min-h-0 min-w-0 flex-1">
           <FleetMapCanvas
             devices={devices}
             visibleIds={visibleIds}
             hoveredId={hoveredId}
             onHover={setHoveredId}
             onSelect={setSelected}
+            fill
           />
         </div>
         <div className="flex w-52 shrink-0 flex-col justify-center border-l border-muted bg-white p-4">
@@ -83,7 +87,7 @@ export function DashboardFleetMap() {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 border-t border-muted px-5 py-2.5">
+      <div className="flex shrink-0 items-center gap-3 border-t border-muted px-5 py-2">
         <StatusLegend />
       </div>
 

@@ -31,12 +31,12 @@ export function AppShell({
       <main
         className={
           fill
-            ? "mx-auto flex min-h-0 w-full max-w-[1440px] flex-1 flex-col px-8 pt-10 pb-6"
+            ? "mx-auto flex min-h-0 w-full max-w-[1440px] flex-1 flex-col px-8 pt-6 pb-4"
             : "mx-auto max-w-[1440px] px-8 py-10"
         }
       >
         {(title || subtitle || headerAction) && (
-          <div className="mb-8 flex shrink-0 items-end justify-between gap-4">
+          <div className={`flex shrink-0 items-end justify-between gap-4 ${fill ? "mb-4" : "mb-8"}`}>
             <div>
               {title ? (
                 <h1 className="text-3xl font-semibold tracking-tight text-foreground">{title}</h1>
