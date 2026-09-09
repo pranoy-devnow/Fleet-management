@@ -2,10 +2,11 @@
 
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
+import { AuthHeading } from "@/features/shell/auth-heading";
 import { AuthShell } from "@/features/shell/auth-shell";
 import { FormField } from "@/features/shell/form-field";
 import { NativeSelect } from "@/features/shell/native-select";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 
 /**
  * First-time Medela access request. Prototype: the button continues with empty fields.
@@ -20,8 +21,7 @@ export function MedelaRegisterForm() {
 
   return (
     <AuthShell>
-      <h2 className="mb-1 text-xl font-bold text-foreground">Create Account</h2>
-      <p className="mb-5 text-sm text-muted-foreground">Register your Medela internal account</p>
+      <AuthHeading title="Create Account" subtitle="Register your Medela internal account" />
       <form className="flex flex-col gap-4" onSubmit={onSubmit} noValidate>
         <FormField label="Full name" name="fullName" placeholder="Sarah Chen" />
         <FormField label="Work email" name="email" type="email" placeholder="name@medela.com" />
@@ -38,9 +38,9 @@ export function MedelaRegisterForm() {
           ]}
         />
         <FormField label="Password" name="password" type="password" placeholder="••••••••" />
-        <Button type="submit" className="mt-1 h-auto w-full rounded-[6px] py-2.5">
+        <PrimaryActionButton type="submit" className="mt-2 w-full">
           Request for Access
-        </Button>
+        </PrimaryActionButton>
       </form>
     </AuthShell>
   );

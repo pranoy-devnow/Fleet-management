@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { Upload } from "lucide-react";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { FirmwareListToolbar } from "@/features/firmware/components/firmware-list-toolbar";
 import { ReleaseChip } from "@/features/firmware/components/release-chip";
 import { filterFirmwareReleases, hasActiveFirmwareFilters } from "@/features/firmware/lib/filter-releases";
@@ -14,6 +13,7 @@ import type { FirmwareFilters } from "@/features/firmware/types";
 import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
 import { GroupedList, GroupedListEmpty, GroupedListRow } from "@/features/shell/grouped-list";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 
 /**
  * Grouped firmware history for Medela staff.
@@ -29,10 +29,14 @@ export function FirmwareHistoryTable() {
       title="Firmware"
       subtitle={`${countActiveReleases()} active · ${rows.length} shown`}
       headerAction={
-        <Button render={<Link href="/internal/firmware/upload" />} className="h-auto gap-2 rounded-full px-4 py-2">
+        <PrimaryActionButton
+          render={<Link href="/internal/firmware/upload" />}
+          nativeButton={false}
+          className="gap-2"
+        >
           <Upload size={15} />
           Upload firmware
-        </Button>
+        </PrimaryActionButton>
       }
     >
       <BackLink href="/internal" label="Overview" />

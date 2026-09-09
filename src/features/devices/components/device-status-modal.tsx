@@ -36,7 +36,7 @@ export function DeviceStatusModal({
       <div className="overflow-hidden rounded-xl bg-white shadow-2xl">
         <div className="flex items-start justify-between border-b border-muted px-6 py-5">
           <div>
-            <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#9CA3AF]">Device Status</div>
+            <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Device Status</div>
             <h2 id={titleId} className="text-xl font-bold text-foreground">
               {device.id}
             </h2>
@@ -61,7 +61,7 @@ export function DeviceStatusModal({
             {rows.map(([label, value, emphasize]) => (
               <div key={label} className="flex gap-4 py-3">
                 <span className="w-40 shrink-0 text-sm text-muted-foreground">{label}</span>
-                <span className={`text-sm font-medium ${emphasize ? "text-[#CE7A0E]" : "text-foreground"}`}>
+                <span className={`text-sm font-medium ${emphasize ? "text-status-needs" : "text-foreground"}`}>
                   {value}
                 </span>
               </div>

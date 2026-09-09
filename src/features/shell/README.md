@@ -1,6 +1,6 @@
 # Shell
 
-Shared chrome: frosted header, grouped lists, list filter controls, auth frame, and back link.
+Shared chrome: brand-yellow header, grouped lists, list filter controls, auth frame, and back link.
 
 ## How to use
 

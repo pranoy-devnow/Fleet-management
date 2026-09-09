@@ -26,14 +26,14 @@ export function FleetMapCanvas({
   aspectClass = "pb-[38%]",
 }: FleetMapCanvasProps) {
   return (
-    <div className={`relative bg-[#B8CCE0] ${aspectClass}`}>
+    <div className={`relative bg-map-water ${aspectClass}`}>
       <svg
         className="absolute inset-0 size-full"
         viewBox={`0 0 ${MAP_VIEWBOX.width} ${MAP_VIEWBOX.height}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        <rect width={MAP_VIEWBOX.width} height={MAP_VIEWBOX.height} fill="#B8CCE0" />
-        <g stroke="#9ABACF" strokeWidth="0.6" opacity="0.4">
+        <rect width={MAP_VIEWBOX.width} height={MAP_VIEWBOX.height} fill="var(--map-water)" />
+        <g stroke="var(--map-graticule)" strokeWidth="0.6" opacity="0.7">
           {[-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150].map((lon) => {
             const x = ((lon + 180) / 360) * MAP_VIEWBOX.width;
             return <line key={lon} x1={x} y1={0} x2={x} y2={MAP_VIEWBOX.height} />;
@@ -48,12 +48,12 @@ export function FleetMapCanvas({
           y1={MAP_VIEWBOX.height / 2}
           x2={MAP_VIEWBOX.width}
           y2={MAP_VIEWBOX.height / 2}
-          stroke="#7AAAC2"
+          stroke="var(--map-equator)"
           strokeWidth="1.2"
           strokeDasharray="10,8"
           opacity="0.6"
         />
-        <g fill="#D6E8C8" stroke="#BDD4AF" strokeWidth="1.2">
+        <g fill="var(--map-land)" stroke="var(--map-coast)" strokeWidth="1.2">
           {CONTINENT_PATHS.map((path) => (
             <path key={path} d={path} />
           ))}
@@ -85,7 +85,7 @@ export function FleetMapCanvas({
                   textAnchor="middle"
                   fontSize="20"
                   fontWeight="600"
-                  fill="#1D2735"
+                  fill="var(--brand-ink)"
                   stroke="white"
                   strokeWidth="5"
                   paintOrder="stroke"

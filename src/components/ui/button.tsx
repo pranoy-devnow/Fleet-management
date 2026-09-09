@@ -9,6 +9,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
+        // Medela pairs yellow with near-black text, and greys out rather than
+        // fading on disable — a translucent yellow reads as a rendering bug.
+        brand:
+          "bg-brand-yellow text-brand-ink hover:bg-brand-yellow-dark focus-visible:ring-brand-yellow-dark/50 disabled:bg-border disabled:text-brand-slate disabled:opacity-100",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:

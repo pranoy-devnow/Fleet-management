@@ -2,10 +2,10 @@
 
 import { ArrowLeft, MapPin } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import type { DeviceCountry } from "@/features/devices/types";
 import { FormField } from "@/features/shell/form-field";
 import { NativeSelect } from "@/features/shell/native-select";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 import { StepHeading } from "@/features/shell/step-heading";
 
 const MODEL_OPTIONS: Array<[string, string]> = [
@@ -73,9 +73,9 @@ export function BiomedDetailsStep({
           <NativeSelect label="Model" name="model" defaultValue="" options={MODEL_OPTIONS} />
         </div>
         <FormField label="Password" name="password" type="password" placeholder="••••••••" />
-        <Button type="submit" className="mt-1 h-auto w-full rounded-[6px] py-2.5">
+        <PrimaryActionButton type="submit" className="mt-2 w-full">
           Register Device &amp; Create Account
-        </Button>
+        </PrimaryActionButton>
       </form>
     </div>
   );

@@ -3,9 +3,9 @@
 import { useId, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { searchDeviceCountries } from "@/features/devices/lib/search-countries";
 import type { DeviceCountry } from "@/features/devices/types";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 import { SearchableListPanel } from "@/features/shell/searchable-list-panel";
 import { StepHeading } from "@/features/shell/step-heading";
 import { cn } from "@/lib/utils";
@@ -71,14 +71,14 @@ export function DeviceLocationStep({
         ))}
       </SearchableListPanel>
 
-      <Button
+      <PrimaryActionButton
         type="button"
         onClick={onNext}
         disabled={selected === null}
-        className="mt-1 h-auto w-full rounded-[6px] py-2.5"
+        className="mt-1 w-full"
       >
         {selected ? `Continue with ${selected.country}` : "Select a country to continue"}
-      </Button>
+      </PrimaryActionButton>
     </div>
   );
 }

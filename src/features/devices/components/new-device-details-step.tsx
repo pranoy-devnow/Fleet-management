@@ -2,11 +2,11 @@
 
 import { ArrowLeft, MapPin } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { BIOMED_HOSPITAL, DEVICE_MODEL_CHOICES } from "@/features/devices/constants";
 import type { DeviceCountry } from "@/features/devices/types";
 import { FormField } from "@/features/shell/form-field";
 import { NativeSelect } from "@/features/shell/native-select";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 import { StepHeading } from "@/features/shell/step-heading";
 
 /**
@@ -76,14 +76,14 @@ export function NewDeviceDetailsStep({
         <FormField label="Ward" name="ward" placeholder="NICU Ward 4" />
 
         {error ? (
-          <p role="alert" className="text-sm font-medium text-[#D32F27]">
+          <p role="alert" className="text-sm font-medium text-status-failed">
             {error}
           </p>
         ) : null}
 
-        <Button type="submit" className="mt-1 h-auto w-full rounded-[6px] py-2.5">
+        <PrimaryActionButton type="submit" className="mt-2 w-full">
           Add device
-        </Button>
+        </PrimaryActionButton>
       </form>
     </div>
   );

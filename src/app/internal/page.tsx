@@ -1,22 +1,24 @@
 import { Upload } from "lucide-react";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { DashboardFleetMap } from "@/features/devices/components/dashboard-fleet-map";
 import { StatCards } from "@/features/devices/components/stat-cards";
 import { AppShell } from "@/features/shell/app-shell";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 
 export default function InternalDashboardPage() {
   return (
     <AppShell
       headerAction={
-        <Button
+        <PrimaryActionButton
           render={<Link href="/internal/firmware/upload" />}
-          className="h-auto gap-2 rounded-full px-4 py-2"
+          nativeButton={false}
+          // White on brand yellow fails contrast; teal is Medela's readable white-text fill.
+          className="gap-2 bg-brand-teal text-white hover:bg-brand-teal-dark"
         >
           <Upload size={15} />
           Upload firmware
-        </Button>
+        </PrimaryActionButton>
       }
     >
       <StatCards />

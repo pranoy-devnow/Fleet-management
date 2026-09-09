@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { AddDeviceModal } from "@/features/devices/components/add-device-modal";
 import { AssignedDeviceList } from "@/features/devices/components/assigned-device-list";
 import { useAssignedDevices } from "@/features/devices/hooks/use-assigned-devices";
 import { biomedDeviceHref, type BiomedDeviceView } from "@/features/devices/lib/device-hrefs";
 import { AppShell } from "@/features/shell/app-shell";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 
 /**
  * The signed-in biomed's device list, with a way to register another device.
@@ -27,14 +27,10 @@ export function MyDevicesScreen({ rowView }: { rowView: BiomedDeviceView }) {
     <AppShell
       title="My Devices"
       headerAction={
-        <Button
-          type="button"
-          onClick={() => setIsAdding(true)}
-          className="h-auto rounded-[6px] px-4 py-2.5"
-        >
+        <PrimaryActionButton type="button" onClick={() => setIsAdding(true)} className="gap-2">
           <Plus size={16} />
           Add new device
-        </Button>
+        </PrimaryActionButton>
       }
     >
       <div className="max-w-2xl">

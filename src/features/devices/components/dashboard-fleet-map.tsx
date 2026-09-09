@@ -49,14 +49,14 @@ export function DashboardFleetMap() {
         <div className="flex items-center gap-2">
           <Globe size={16} className="text-primary" />
           <span className="text-sm font-semibold text-foreground">Global Fleet</span>
-          <span className="text-xs text-[#9CA3AF]">
+          <span className="text-xs text-muted-foreground">
             — {visible.length} of {devices.length} devices
           </span>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 border-b border-muted bg-[#FAFBFC] px-5 py-2.5">
-        <Filter size={13} className="shrink-0 text-[#9CA3AF]" />
+      <div className="flex flex-wrap items-center gap-2 border-b border-muted bg-muted px-5 py-2.5">
+        <Filter size={13} className="shrink-0 text-muted-foreground" />
         <NativeSelect compact highlightWhenSet label="Hospital" value={filters.hospital} onChange={(value) => update("hospital", value)} options={hospitals} />
         <NativeSelect compact highlightWhenSet label="Region" value={filters.region} onChange={(value) => update("region", value)} options={REGION_OPTIONS} />
         <NativeSelect compact highlightWhenSet label="Model" value={filters.model} onChange={(value) => update("model", value)} options={MODEL_OPTIONS} />

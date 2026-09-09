@@ -63,7 +63,7 @@ export function AccountMenu() {
         <NotificationCount
           count={notificationCount}
           size="lg"
-          className="absolute -top-1.5 -right-1.5 ring-[3px] ring-white"
+          className="absolute -top-1.5 -right-1.5 ring-[3px] ring-brand-yellow"
         />
       </button>
 

@@ -1,11 +1,11 @@
 # Firmware
 
-Release history, publish flow, notification automation screen, and the Biomed email preview.
+Release history and the publish form.
 
 ## How to use
 
 - `/internal/firmware` — history table
-- `/internal/firmware/upload` → `/notify` → `/email` — publish click-through
+- `/internal/firmware/upload` — publish form; Publish Update returns to history
 - `/internal/firmware/[version]?model=` — detail (version is not unique without model)
 
 ### Filter state
@@ -20,5 +20,5 @@ Release history, publish flow, notification automation screen, and the Biomed em
 
 - `getFirmwareRelease` requires both version and model.
 - Release status is the visible segmented axis, so `describeFirmwareFilters` omits it — one filter, one UI path.
-- Static routes (`upload`, `notify`, `email`) must stay as folders so they are not captured by `[version]`.
-- Publish does not persist a new release; it only drives the prototype journey.
+- The `upload` folder must stay so it is not captured by `[version]`.
+- Publish does not persist a new release; it returns to history.

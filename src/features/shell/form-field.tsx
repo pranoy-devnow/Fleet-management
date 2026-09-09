@@ -30,7 +30,7 @@ export function FormField({
         type={type}
         placeholder={placeholder}
         defaultValue={defaultValue}
-        className="h-auto rounded-[6px] bg-white px-3 py-2.5 placeholder:text-[#9CA3AF]"
+        className="h-auto rounded-[6px] bg-white px-3 py-2.5 placeholder:text-muted-foreground"
       />
     </div>
   );

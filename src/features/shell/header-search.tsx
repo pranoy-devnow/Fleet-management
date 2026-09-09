@@ -47,7 +47,7 @@ export function HeaderSearch() {
       <button
         type="button"
         onClick={openSearch}
-        className="flex h-9 w-full items-center gap-2 rounded-full bg-black/5 px-3.5 text-sm text-muted-foreground transition-colors hover:bg-black/8"
+        className="flex h-9 w-full items-center gap-2 rounded-full bg-white/75 px-3.5 text-sm text-brand-ink/70 transition-colors hover:bg-white"
         aria-expanded={open}
         aria-controls={inputId}
       >

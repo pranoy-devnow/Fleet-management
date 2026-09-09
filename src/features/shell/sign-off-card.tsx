@@ -15,7 +15,7 @@ export function SignOffCard() {
       <p className="mb-4 text-xs text-muted-foreground">
         By saving or publishing this release, your name will be recorded as the authorising engineer in the audit trail.
       </p>
-      <div className="flex items-center gap-3 rounded-lg border border-muted bg-[#F9FAFB] px-4 py-3">
+      <div className="flex items-center gap-3 rounded-lg border border-muted bg-muted px-4 py-3">
         <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary">
           <span className="text-sm font-semibold text-primary-foreground">JD</span>
         </div>
@@ -23,12 +23,12 @@ export function SignOffCard() {
           <div className="text-sm font-semibold text-foreground">Jane Doe</div>
           <div className="text-xs text-muted-foreground">jane.doe@medela.com · Clinical Engineering</div>
         </div>
-        <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-xs font-medium text-[#13985A]">
+        <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-status-updated/25 bg-status-updated-tint px-2.5 py-1 text-xs font-medium text-status-updated">
           <CheckCircle size={12} />
           Authorised
         </div>
       </div>
-      <p className="mt-3 text-xs text-[#9CA3AF]">
+      <p className="mt-3 text-xs text-muted-foreground">
         Sign-off timestamp will be recorded as:{" "}
         <span className="font-mono">{timestamp} UTC</span>
       </p>

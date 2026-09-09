@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { Upload } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { listHospitals } from "@/features/devices/repositories/device-repository";
 import { AppShell } from "@/features/shell/app-shell";
@@ -12,12 +11,12 @@ import { BackLink } from "@/features/shell/back-link";
 import { FormField } from "@/features/shell/form-field";
 import { NativeSelect } from "@/features/shell/native-select";
 import { Panel } from "@/features/shell/panel";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 
 /**
  * Firmware publish form: file dropzone, release notes, target, and scheduler.
  */
 export function UploadFirmwareForm() {
-  const router = useRouter();
   const [dragging, setDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [deployType, setDeployType] = useState("immediate");
@@ -41,10 +40,10 @@ export function UploadFirmwareForm() {
               setFileName(event.dataTransfer.files[0]?.name ?? "firmware.bin");
             }}
             className={`flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-10 transition-colors ${
-              dragging ? "border-primary bg-secondary" : "border-border bg-[#F9FAFB]"
+              dragging ? "border-primary bg-secondary" : "border-border bg-muted"
             }`}
           >
-            <Upload className="text-[#9CA3AF]" size={28} />
+            <Upload className="text-muted-foreground" size={28} />
             {fileName ? (
               <p className="text-sm font-medium text-foreground">{fileName}</p>
             ) : (
@@ -53,7 +52,7 @@ export function UploadFirmwareForm() {
                   Drag firmware file here, or{" "}
                   <span className="cursor-pointer font-medium text-primary hover:underline">Browse</span>
                 </p>
-                <p className="text-xs text-[#9CA3AF]">.bin, .img, .hex — max 500 MB</p>
+                <p className="text-xs text-muted-foreground">.bin, .img, .hex — max 500 MB</p>
               </>
             )}
           </div>
@@ -68,7 +67,7 @@ export function UploadFirmwareForm() {
               <Textarea
                 rows={4}
                 placeholder="Describe what changed in this firmware release…"
-                className="resize-none rounded-[6px] bg-white placeholder:text-[#9CA3AF]"
+                className="resize-none rounded-[6px] bg-white placeholder:text-muted-foreground"
               />
             </div>
           </div>
@@ -121,9 +120,13 @@ export function UploadFirmwareForm() {
           ) : null}
         </Panel>
 
-        <Button onClick={() => router.push("/internal/firmware/notify")} className="h-auto self-start rounded-[6px] px-8 py-2.5">
+        <PrimaryActionButton
+          render={<Link href="/internal/firmware" />}
+          nativeButton={false}
+          className="self-start bg-brand-teal px-8 text-white hover:bg-brand-teal-dark"
+        >
           Publish Update
-        </Button>
+        </PrimaryActionButton>
       </div>
     </AppShell>
   );

@@ -6,18 +6,18 @@ export const RELEASE_STATUS_STYLES: Record<
 > = {
   active: {
     label: "Active",
-    dot: "bg-[#13985A]",
-    className: "bg-green-50 text-[#13985A] border-green-200",
+    dot: "bg-status-updated",
+    className: "bg-status-updated-tint text-status-updated border-status-updated/25",
   },
   superseded: {
     label: "Superseded",
-    dot: "bg-[#6B7280]",
-    className: "bg-gray-50 text-[#6B7280] border-gray-200",
+    dot: "bg-status-neutral",
+    className: "bg-status-neutral-tint text-status-neutral border-status-neutral/25",
   },
   recalled: {
     label: "Recalled",
-    dot: "bg-[#D32F27]",
-    className: "bg-red-50 text-[#D32F27] border-red-200",
+    dot: "bg-status-failed",
+    className: "bg-status-failed-tint text-status-failed border-status-failed/25",
   },
 };
 

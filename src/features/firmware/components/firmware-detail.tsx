@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AlertTriangle, CheckCircle, RefreshCw, Upload } from "lucide-react";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { listHospitals } from "@/features/devices/repositories/device-repository";
 import { DEPLOY_LABELS, RELEASE_STATUS_STYLES } from "@/features/firmware/constants";
@@ -13,6 +12,8 @@ import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
 import { NativeSelect } from "@/features/shell/native-select";
 import { Panel } from "@/features/shell/panel";
+import { PrimaryActionButton } from "@/features/shell/primary-action-button";
+import { SecondaryActionButton } from "@/features/shell/secondary-action-button";
 
 /**
  * Firmware release detail with optional edit mode for the prototype.
@@ -48,30 +49,34 @@ export function FirmwareDetail({ release }: { release: FirmwareRelease }) {
       headerAction={
         isEditing ? (
           <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={() => { setDraft(saved); setIsEditing(false); }} className="h-auto rounded-[6px] border-primary px-5 py-2.5 text-primary">
+            <SecondaryActionButton onClick={() => { setDraft(saved); setIsEditing(false); }}>
               Cancel
-            </Button>
-            <Button onClick={save} className="h-auto gap-2 rounded-[6px] px-5 py-2.5">
+            </SecondaryActionButton>
+            <PrimaryActionButton onClick={save} className="gap-2">
               <CheckCircle size={14} /> Save changes
-            </Button>
+            </PrimaryActionButton>
           </div>
         ) : (
           <div className="flex items-center gap-2">
             {release.status === "active" ? (
-              <Button render={<Link href="/internal/firmware/upload" />} className="h-auto gap-2 rounded-[6px] px-5 py-2.5">
+              <PrimaryActionButton
+                render={<Link href="/internal/firmware/upload" />}
+                nativeButton={false}
+                className="gap-2"
+              >
                 <Upload size={14} /> Upload New Version
-              </Button>
+              </PrimaryActionButton>
             ) : null}
-            <Button variant="outline" onClick={() => setIsEditing(true)} className="h-auto gap-2 rounded-[6px] border-primary px-5 py-2.5 text-primary">
+            <SecondaryActionButton onClick={() => setIsEditing(true)}>
               <RefreshCw size={14} /> Edit
-            </Button>
+            </SecondaryActionButton>
           </div>
         )
       }
     >
       <BackLink href="/internal/firmware" label="Back to Firmware History" />
       {saveSuccess ? (
-        <div className="mb-4 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-[#13985A]">
+        <div className="mb-4 flex items-center gap-2 rounded-lg border border-status-updated/25 bg-status-updated-tint px-4 py-3 text-sm font-medium text-status-updated">
           <CheckCircle size={16} /> Changes saved successfully.
         </div>
       ) : null}
@@ -127,7 +132,7 @@ export function FirmwareDetail({ release }: { release: FirmwareRelease }) {
                   className="resize-none rounded-[6px] bg-white"
                 />
               ) : (
-                <p className="text-sm leading-relaxed text-[#374151]">{saved.notes}</p>
+                <p className="text-sm leading-relaxed text-foreground">{saved.notes}</p>
               )}
             </div>
           </div>
@@ -173,9 +178,9 @@ export function FirmwareDetail({ release }: { release: FirmwareRelease }) {
           {release.devices > 0 ? (
             <div className="flex flex-col gap-3">
               {[
-                { label: "Updated", count: Math.round(release.devices * 0.72), color: "bg-[#13985A]" },
-                { label: "Needs update", count: Math.round(release.devices * 0.21), color: "bg-[#CE7A0E]" },
-                { label: "Failed", count: Math.round(release.devices * 0.07), color: "bg-[#D32F27]" },
+                { label: "Updated", count: Math.round(release.devices * 0.72), color: "bg-status-updated" },
+                { label: "Needs update", count: Math.round(release.devices * 0.21), color: "bg-status-needs" },
+                { label: "Failed", count: Math.round(release.devices * 0.07), color: "bg-status-failed" },
               ].map((row) => (
                 <div key={row.label}>
                   <div className="mb-1 flex justify-between text-xs">

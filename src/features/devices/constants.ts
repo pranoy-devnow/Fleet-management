@@ -6,10 +6,15 @@ export const STATUS_LABELS: Record<DeviceStatus, string> = {
   failed: "Failed Update",
 };
 
+/**
+ * Pin fills for the fleet map, which needs concrete colours because SVG `fill`
+ * cannot take a Tailwind class. Reads the theme tokens so the map, chips and row
+ * shading can never disagree about what "failed" looks like.
+ */
 export const STATUS_PIN_COLORS: Record<DeviceStatus, string> = {
-  "needs-update": "#CE7A0E",
-  updated: "#13985A",
-  failed: "#D32F27",
+  "needs-update": "var(--status-needs)",
+  updated: "var(--status-updated)",
+  failed: "var(--status-failed)",
 };
 
 export const STATUS_CHIP_STYLES: Record<
@@ -17,23 +22,23 @@ export const STATUS_CHIP_STYLES: Record<
   { dot: string; className: string }
 > = {
   "needs-update": {
-    dot: "bg-[#CE7A0E]",
-    className: "bg-amber-50 text-[#CE7A0E] border-amber-200",
+    dot: "bg-status-needs",
+    className: "bg-status-needs-tint text-status-needs border-status-needs/25",
   },
   updated: {
-    dot: "bg-[#13985A]",
-    className: "bg-green-50 text-[#13985A] border-green-200",
+    dot: "bg-status-updated",
+    className: "bg-status-updated-tint text-status-updated border-status-updated/25",
   },
   failed: {
-    dot: "bg-[#D32F27]",
-    className: "bg-red-50 text-[#D32F27] border-red-200",
+    dot: "bg-status-failed",
+    className: "bg-status-failed-tint text-status-failed border-status-failed/25",
   },
 };
 
 export const STATUS_ROW_BACKGROUNDS: Record<DeviceStatus, string> = {
-  "needs-update": "bg-amber-50",
-  updated: "bg-green-50",
-  failed: "bg-red-50",
+  "needs-update": "bg-status-needs-tint",
+  updated: "bg-status-updated-tint",
+  failed: "bg-status-failed-tint",
 };
 
 export const REGION_OPTIONS = [
