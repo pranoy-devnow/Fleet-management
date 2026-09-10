@@ -1,14 +1,13 @@
 "use client";
 
-import { DeviceDetailRows } from "@/features/devices/components/device-detail-rows";
 import { DeviceFirmwareLogList } from "@/features/devices/components/device-firmware-log-list";
 import { DeviceFirmwareUpdateCard } from "@/features/devices/components/device-firmware-update-card";
 import { StatusChip } from "@/features/devices/components/status-chip";
 import { useDeviceCatalog } from "@/features/devices/hooks/use-device-catalog";
 import { availableFirmwareUpdates } from "@/features/devices/lib/available-updates";
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
-import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
+import { DefinitionList } from "@/features/shell/definition-list";
 import { Panel } from "@/features/shell/panel";
 
 /**
@@ -24,17 +23,17 @@ export function DeviceDetailScreen({ deviceId }: { deviceId: string }) {
 
   if (!device) {
     return (
-      <AppShell title="Device Status Detail">
+      <>
         <BackLink href="/internal" label="Back to Dashboard" />
         <p className="text-sm text-muted-foreground">This device was not found.</p>
-      </AppShell>
+      </>
     );
   }
 
   const offers = availableFirmwareUpdates(device, releases);
 
   return (
-    <AppShell title="Device Status Detail">
+    <>
       <BackLink href="/internal" label="Back to Dashboard" />
       <div className="flex max-w-xl flex-col gap-8">
         <Panel className="p-6">
@@ -42,7 +41,7 @@ export function DeviceDetailScreen({ deviceId }: { deviceId: string }) {
             <h2 className="text-2xl font-bold text-foreground">{device.id}</h2>
             <StatusChip status={device.status} />
           </div>
-          <DeviceDetailRows
+          <DefinitionList
             rows={[
               ["Model", `Medela ${device.model}`],
               ["Firmware version", device.firmware],
@@ -60,6 +59,6 @@ export function DeviceDetailScreen({ deviceId }: { deviceId: string }) {
         </Panel>
         <DeviceFirmwareLogList entries={logs[device.id] ?? []} />
       </div>
-    </AppShell>
+    </>
   );
 }

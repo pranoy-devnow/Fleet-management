@@ -2,7 +2,7 @@ import { BrandFocusLayout } from "@/features/brand/components/brand-focus-layout
 import { Panel } from "@/features/shell/panel";
 
 /**
- * Frame for the login and register screens.
+ * Frame for the sign-in screen.
  *
  * Black field and large lockup, with the form in a white card. `/` redirects
  * here, so arriving at sign-in is the start of the product.

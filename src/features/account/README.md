@@ -5,7 +5,7 @@ Header avatar menu and profile for the prototype signed-in Medela Internal user.
 ## How to use
 
 - `AccountMenu` lives in `AppHeader`. Everyone sees Profile and Log out.
-- `/internal/profile` — read-only account details
+- `/internal/profile` — read-only account details. The page wraps `AppShell`; `ProfileScreen` returns the card only.
 
 This module is only ever about the signed-in user.
 

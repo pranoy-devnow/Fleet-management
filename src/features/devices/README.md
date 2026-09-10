@@ -20,7 +20,7 @@ Fleet inventory and status chips for Medela Internal staff.
 
 `DeviceListToolbar` composes the shell's search field and status segmented control. `DeviceListEmpty` turns a `suggestFilterRelaxation` result into a one-click way out.
 
-The internal overview (`/internal`) uses `AppShell fill fleetNav` for Devices, Firmware history, and Upload firmware. Filters and rows share a `GroupedList` card so only the rows scroll. The Devices tab count follows the list filters via `fleetNavCountStore`. `/internal/devices` redirects here, including a `?status=` filter. Device rows still open `/internal/devices/[id]`. Identity and the next firmware share one card; firmware history is a second card with the title separated from the rows. History rows use the same uploader credit as the firmware catalog, with notes shortened to the first clause.
+The `/internal` page wraps `AppShell fill fleetNav`. Feature screens return list content only. Filters and rows share a `GroupedList` card so only the rows scroll. The Devices tab count follows the list filters via `fleetNavCountStore`. `/internal/devices` redirects here, including a `?status=` filter. Device rows still open `/internal/devices/[id]`. Identity and the next firmware share one card; firmware history is a second card with the title separated from the rows. History rows use the same uploader credit as the firmware catalog, with notes shortened to the first clause. Device detail uses the shell `DefinitionList` for model and firmware.
 
 ## Gotchas
 
@@ -30,3 +30,10 @@ The internal overview (`/internal`) uses `AppShell fill fleetNav` for Devices, F
 - `suggestFilterRelaxation` assumes the current result is empty; it only returns a removal that reveals at least one device, and ties go to the less intentional facet (search is suggested last).
 - Sample data is in-memory only.
 - Starting an update on a device finishes in `DEVICE_UPDATE_DURATION_MS` (12s) so the progress is visible without waiting minutes. The device then shows as updated on the list.
+
+## For implementers
+
+- Replace `deviceCatalogStore` with an API. Keep `listWorldDevices` / `getWorldDeviceById` as the read boundary until then.
+- Add auth middleware so `/internal/devices/[id]` is not public.
+- Keep filter and update rules in `lib/`; do not move them into components.
+- Pages own `AppShell`. This screen should stay embeddable.

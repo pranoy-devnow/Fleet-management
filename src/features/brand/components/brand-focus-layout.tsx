@@ -5,16 +5,16 @@ import { MedelaMark } from "@/features/brand/components/medela-mark";
 const FOCUS_LOCKUP_CLASS = "h-16 text-white sm:h-20";
 
 /**
- * Shared frame for `/`, login and register: black field, large official lockup
- * sitting directly above the white card.
+ * Shared frame for `/` and login: black field, large official lockup sitting
+ * directly above the white card.
  *
  * The lockup is taken out of document flow and parked at `20vh` — high enough
  * to sit above the card, not so high it reads as a header. That offset does
- * not depend on card height, so a growing sign-up form cannot move the
- * wordmark. The scroll pane's top padding reserves the same slot, which is
- * why the card always starts just underneath.
+ * not depend on card height, so the wordmark stays put. The scroll pane's top
+ * padding reserves the same slot, which is why the card always starts just
+ * underneath.
  *
- * @param children - The white card or picker; this layout does not wrap it
+ * @param children - The white card; this layout does not wrap it
  */
 export function BrandFocusLayout({ children }: { children: React.ReactNode }) {
   return (

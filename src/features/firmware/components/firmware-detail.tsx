@@ -5,7 +5,6 @@ import { AlertTriangle } from "lucide-react";
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
 import { findFirmwareRelease } from "@/features/firmware/lib/find-firmware-release";
 import { signOffPersonFromName } from "@/features/firmware/lib/sign-off-person";
-import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
 import { Panel } from "@/features/shell/panel";
 import { SignOffCard } from "@/features/shell/sign-off-card";
@@ -28,19 +27,15 @@ export function FirmwareDetail({
 
   if (!release) {
     return (
-      <AppShell title="Firmware" variant="form">
+      <>
         <BackLink href="/internal/firmware" label="Back to Firmware History" />
         <p className="text-sm text-muted-foreground">This release was not found.</p>
-      </AppShell>
+      </>
     );
   }
 
   return (
-    <AppShell
-      title={`Firmware ${release.version}`}
-      subtitle={`${release.deviceType} — ${release.region}`}
-      variant="form"
-    >
+    <>
       <BackLink href="/internal/firmware" label="Back to Firmware History" />
       {release.status === "recalled" ? (
         <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4">
@@ -76,6 +71,6 @@ export function FirmwareDetail({
         badge="Authorised"
         footer={`Uploaded on ${release.date}`}
       />
-    </AppShell>
+    </>
   );
 }

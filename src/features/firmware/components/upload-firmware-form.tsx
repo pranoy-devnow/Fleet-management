@@ -9,7 +9,6 @@ import { getAccountUser } from "@/features/account/lib/current-user";
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
 import { signOffPersonFromName } from "@/features/firmware/lib/sign-off-person";
 import { publishFirmwareSchema } from "@/features/firmware/schemas";
-import { AppShell } from "@/features/shell/app-shell";
 import { FormField } from "@/features/shell/form-field";
 import { Panel } from "@/features/shell/panel";
 import { PrimaryActionButton } from "@/features/shell/primary-action-button";
@@ -38,7 +37,7 @@ export function UploadFirmwareForm() {
   }
 
   return (
-    <AppShell fleetNav variant="form">
+    <>
       <form className="flex flex-col gap-5" onSubmit={onSubmit}>
         <Panel className="p-6">
           <h3 className="mb-4 font-semibold text-foreground">Firmware File</h3>
@@ -97,7 +96,7 @@ export function UploadFirmwareForm() {
           </p>
         ) : null}
 
-        <PrimaryActionButton type="submit" className="self-start bg-brand-teal px-8 text-white hover:bg-brand-teal-dark">
+        <PrimaryActionButton type="submit" className="self-start px-8">
           Publish Update
         </PrimaryActionButton>
       </form>
@@ -113,6 +112,6 @@ export function UploadFirmwareForm() {
           </>
         }
       />
-    </AppShell>
+    </>
   );
 }

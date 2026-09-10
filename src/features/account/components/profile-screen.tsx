@@ -1,7 +1,7 @@
 import { AccountAvatar } from "@/features/account/components/account-avatar";
 import { getAccountUser } from "@/features/account/lib/current-user";
-import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
+import { DefinitionList } from "@/features/shell/definition-list";
 import { Panel } from "@/features/shell/panel";
 
 /**
@@ -13,7 +13,7 @@ export function ProfileScreen({ homeHref }: { homeHref: string }) {
   const user = getAccountUser();
 
   return (
-    <AppShell title="Profile" subtitle="Your account details">
+    <>
       <BackLink href={homeHref} label="Overview" />
       <div className="max-w-xl">
         <Panel className="p-6">
@@ -24,23 +24,16 @@ export function ProfileScreen({ homeHref }: { homeHref: string }) {
               <p className="truncate text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>
-          <div className="divide-y divide-muted">
-            {(
-              [
-                ["Name", user.name],
-                ["Email", user.email],
-                ["Role", user.roleLabel],
-                ["Organization", user.organization],
-              ] as const
-            ).map(([label, value]) => (
-              <div key={label} className="flex gap-4 py-3">
-                <span className="w-44 shrink-0 text-sm text-muted-foreground">{label}</span>
-                <span className="text-sm font-medium text-foreground">{value}</span>
-              </div>
-            ))}
-          </div>
+          <DefinitionList
+            rows={[
+              ["Name", user.name],
+              ["Email", user.email],
+              ["Role", user.roleLabel],
+              ["Organization", user.organization],
+            ]}
+          />
         </Panel>
       </div>
-    </AppShell>
+    </>
   );
 }

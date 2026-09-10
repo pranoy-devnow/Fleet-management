@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Medela Fleet Management
 
-## Getting Started
+Prototype portal for Medela Internal staff to review connected breast-pump devices, publish firmware, and inspect release history.
 
-First, run the development server:
+This is a **front-end prototype**. There is no real session, API, or persistence. In-memory stores reset on a full page reload. `/internal/*` is publicly reachable.
+
+## Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev    # http://localhost:3000
+npm test       # Vitest unit suite
+npm run lint   # ESLint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Routes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Path | Screen |
+| --- | --- |
+| `/` | Redirects to `/login/medela` |
+| `/login/medela` | Microsoft SSO card (prototype: continues with no Entra handshake) |
+| `/internal` | Device list |
+| `/internal/devices` | Redirects to `/internal` (keeps `?status=`) |
+| `/internal/devices/[id]` | Device detail and OTA update |
+| `/internal/firmware` | Firmware history |
+| `/internal/firmware/upload` | Publish a release |
+| `/internal/firmware/[version]` | Release detail (`?deviceType=` required) |
+| `/internal/profile` | Read-only account fixture |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+There is no register route.
 
-## Learn More
+## Feature modules
 
-To learn more about Next.js, take a look at the following resources:
+Code lives under `src/features/`, organized by domain:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Module | Role |
+| --- | --- |
+| `auth` | Sign-in card |
+| `account` | Header menu and profile fixture |
+| `brand` | Lockup, trefoil, auth frame |
+| `devices` | Fleet list, filters, device detail |
+| `firmware` | History, publish, release detail |
+| `shell` | Shared chrome and list/form primitives |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Authenticated **pages** wrap `AppShell`. Feature screens return content only.
 
-## Deploy on Vercel
+## Prototype limits
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Login is `router.push("/internal")`. There is no cookie, middleware, or route guard.
+- One signed-in user comes from `getAccountUser()`.
+- Device and firmware mutations live in module-scoped stores and vanish on reload.
+- The publish dropzone is visual only; Zod validates version and notes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Unused list menus, dialogs, and unused shadcn table/select/badge primitives were removed on purpose. Do not treat that as a missing backlog — rebuild them when a screen needs them.
+
+## For implementers
+
+- Replace the in-memory stores with an API. Keep repositories as the read boundary.
+- Add real Entra SSO and middleware so `/internal/*` is not public.
+- Keep Zod at form and API boundaries (`parseFormData` on the client).
+- Do not import `AppShell` from feature screens; wrap it in the route file.

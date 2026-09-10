@@ -1,7 +1,9 @@
 /**
- * Label/value rows used on device detail cards.
+ * Label/value rows used on profile and device detail cards.
+ *
+ * @param rows - `[label, value]` pairs, rendered in order
  */
-export function DeviceDetailRows({ rows }: { rows: ReadonlyArray<readonly [string, string]> }) {
+export function DefinitionList({ rows }: { rows: ReadonlyArray<readonly [string, string]> }) {
   return (
     <div className="divide-y divide-muted">
       {rows.map(([label, value]) => (

@@ -1,8 +1,7 @@
 /**
- * Title and one line of context at the top of a single-step auth form.
+ * Title and one line of context at the top of the sign-in form.
  *
- * Renders an `<h1>` because inside `AuthShell` the form *is* the page. Multi-step
- * flows use `StepHeading` instead, which adds progress and stays a level down.
+ * Renders an `<h1>` because inside `AuthShell` the form *is* the page.
  *
  * @param title - What this screen is for, in the user's words
  * @param subtitle - One line on what happens next
