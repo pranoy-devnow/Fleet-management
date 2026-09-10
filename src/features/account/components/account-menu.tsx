@@ -1,47 +1,26 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useId, useState } from "react";
 import Link from "next/link";
 
 import { AccountAvatar } from "@/features/account/components/account-avatar";
-import { NotificationCount } from "@/features/account/components/notification-count";
 import {
   ACCOUNT_PROFILE_HREF,
-  ACCOUNT_ROLES_HREF,
   SIGN_OUT_HREF,
   getAccountUser,
 } from "@/features/account/lib/current-user";
 import { PopoverSurface } from "@/features/shell/popover-surface";
 import { useDismiss } from "@/features/shell/use-dismiss";
-import { useAccessRequests } from "@/features/users/hooks/use-access-requests";
-import {
-  describeRoleNotifications,
-  roleNotificationCount,
-} from "@/features/users/lib/role-notification-count";
-import { findRoleByEmail } from "@/features/users/lib/role-permissions";
-import { listMedelaUsers } from "@/features/users/repositories/user-repository";
 
 /**
- * Header account control: initials avatar that opens Profile, Role management,
- * and Log out. There is no real session, so Log out returns to Medela sign-in.
- *
- * Admins see a notification badge for pending access requests. Opening the menu
- * repeats that same count next to Role management so the badge has a destination.
+ * Header account control: initials avatar that opens Profile and Log out.
+ * There is no real session, so Log out returns to Medela sign-in.
  */
 export function AccountMenu() {
   const user = getAccountUser();
   const [open, setOpen] = useState(false);
   const rootRef = useDismiss(open, () => setOpen(false));
   const panelId = useId();
-  const { requests } = useAccessRequests();
-
-  const notificationCount = useMemo(() => {
-    const platformRole = findRoleByEmail(listMedelaUsers(), user.email);
-    return roleNotificationCount(platformRole, requests.length);
-  }, [requests.length, user.email]);
-
-  const notificationLabel =
-    notificationCount > 0 ? `, ${describeRoleNotifications(notificationCount)}` : "";
 
   return (
     <div ref={rootRef} className="relative justify-self-end">
@@ -51,15 +30,10 @@ export function AccountMenu() {
         aria-expanded={open}
         aria-controls={panelId}
         aria-haspopup="menu"
-        aria-label={`Account menu for ${user.name}${notificationLabel}`}
+        aria-label={`Account menu for ${user.name}`}
         className="relative rounded-full p-1 outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
       >
         <AccountAvatar initials={user.initials} />
-        <NotificationCount
-          count={notificationCount}
-          size="lg"
-          className="absolute -top-1.5 -right-1.5 ring-[3px] ring-brand-yellow"
-        />
       </button>
 
       {open ? (
@@ -71,10 +45,6 @@ export function AccountMenu() {
             </div>
             <MenuLink href={ACCOUNT_PROFILE_HREF} onPick={() => setOpen(false)}>
               Profile
-            </MenuLink>
-            <MenuLink href={ACCOUNT_ROLES_HREF} onPick={() => setOpen(false)}>
-              <span>Role management</span>
-              <NotificationCount count={notificationCount} />
             </MenuLink>
             <div className="border-t border-black/6">
               <MenuLink href={SIGN_OUT_HREF} onPick={() => setOpen(false)}>

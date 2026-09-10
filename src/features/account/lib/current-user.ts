@@ -7,9 +7,6 @@ export const ACCOUNT_HOME_HREF = "/internal";
 /** Profile page for the signed-in Medela Internal user. */
 export const ACCOUNT_PROFILE_HREF = "/internal/profile";
 
-/** User-management page for Medela Internal staff. */
-export const ACCOUNT_ROLES_HREF = "/internal/roles";
-
 /** Sign-in form. Log out returns here because there is no session to clear. */
 export const SIGN_OUT_HREF = "/login/medela";
 
