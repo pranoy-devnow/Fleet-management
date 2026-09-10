@@ -9,5 +9,5 @@ import type { PlatformRole } from "../types";
 export function describeViewerAccess(role: PlatformRole | null): string {
   if (role === "admin") return "You have Admin access";
   if (role === "it") return `You have ${ROLE_LABELS.it} access`;
-  return "Directory of Medela users and hospital staff";
+  return "Directory of Medela Internal users";
 }

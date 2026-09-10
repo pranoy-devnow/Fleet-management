@@ -1,49 +1,23 @@
-import { ACCOUNT_USERS } from "../data/users";
-import type { AccountUser, PortalRole } from "../types";
+import { CURRENT_USER } from "../data/users";
+import type { AccountUser } from "../types";
+
+/** Overview for the signed-in Medela Internal user. */
+export const ACCOUNT_HOME_HREF = "/internal";
+
+/** Profile page for the signed-in Medela Internal user. */
+export const ACCOUNT_PROFILE_HREF = "/internal/profile";
+
+/** User-management page for Medela Internal staff. */
+export const ACCOUNT_ROLES_HREF = "/internal/roles";
+
+/** Sign-in form. Log out returns here because there is no session to clear. */
+export const SIGN_OUT_HREF = "/login/medela";
 
 /**
- * Resolves the portal from a path. Anything under `/biomed` is hospital staff;
- * every other authenticated route is Medela internal.
+ * Prototype signed-in Medela staff user. Does not throw — there is one fixture.
  *
- * @param pathname - Current URL path
- * @returns Portal the chrome should treat as signed in
+ * @returns The internal account fixture
  */
-export function resolvePortalRole(pathname: string): PortalRole {
-  return pathname.startsWith("/biomed") ? "biomed" : "internal";
-}
-
-/**
- * Home path for a portal.
- *
- * @param role - Portal to land on
- */
-export function accountHomeHref(role: PortalRole): string {
-  return role === "biomed" ? "/biomed" : "/internal";
-}
-
-/**
- * Profile page for the given portal.
- *
- * @param role - Portal whose account is being viewed
- */
-export function accountProfileHref(role: PortalRole): string {
-  return `${accountHomeHref(role)}/profile`;
-}
-
-/**
- * Role-management page for the given portal.
- *
- * @param role - Portal whose roles are being viewed
- */
-export function accountRolesHref(role: PortalRole): string {
-  return `${accountHomeHref(role)}/roles`;
-}
-
-/**
- * Prototype user for the portal. Does not throw — every role has a fixture.
- *
- * @param role - Portal to look up
- */
-export function getAccountUser(role: PortalRole): AccountUser {
-  return ACCOUNT_USERS[role];
+export function getAccountUser(): AccountUser {
+  return CURRENT_USER;
 }

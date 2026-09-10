@@ -2,30 +2,49 @@
 
 import { useState } from "react";
 import { Upload } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Textarea } from "@/components/ui/textarea";
-import { listHospitals } from "@/features/devices/repositories/device-repository";
+import {
+  DEPLOY_TYPE_OPTIONS,
+  FIRMWARE_DEVICE_TYPE_OPTIONS,
+  FIRMWARE_REGION_OPTIONS,
+} from "@/features/firmware/constants";
+import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
+import { publishFirmwareSchema } from "@/features/firmware/schemas";
 import { AppShell } from "@/features/shell/app-shell";
-import { BackLink } from "@/features/shell/back-link";
 import { FormField } from "@/features/shell/form-field";
 import { NativeSelect } from "@/features/shell/native-select";
 import { Panel } from "@/features/shell/panel";
 import { PrimaryActionButton } from "@/features/shell/primary-action-button";
+import { parseFormData } from "@/lib/parse-form";
 
 /**
  * Firmware publish form: file dropzone, release notes, target, and scheduler.
+ * Region and device type are written onto the release history reads.
  */
 export function UploadFirmwareForm() {
+  const router = useRouter();
+  const { publish } = useFirmwareReleases();
   const [dragging, setDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [deployType, setDeployType] = useState("immediate");
-  const hospitals = [["all", "All hospitals"], ...listHospitals().map((name) => [name, name] as const)] as const;
+  const [error, setError] = useState<string | null>(null);
+
+  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const parsed = parseFormData(new FormData(event.currentTarget), publishFirmwareSchema);
+    if (!parsed.ok) {
+      setError(parsed.message);
+      return;
+    }
+    publish(parsed.data);
+    router.push("/internal/firmware");
+  }
 
   return (
-    <AppShell title="Upload New Firmware" subtitle="Publish a firmware release to the fleet" variant="form">
-      <BackLink href="/internal" label="Back to Dashboard" />
-      <div className="flex flex-col gap-5">
+    <AppShell fleetNav variant="form">
+      <form className="flex flex-col gap-5" onSubmit={onSubmit}>
         <Panel className="p-6">
           <h3 className="mb-4 font-semibold text-foreground">Firmware File</h3>
           <div
@@ -63,8 +82,12 @@ export function UploadFirmwareForm() {
           <div className="flex flex-col gap-4">
             <FormField label="Version label" name="version" placeholder="v2.4.0" />
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-foreground">Release notes</label>
+              <label className="text-sm font-semibold text-foreground" htmlFor="notes">
+                Release notes
+              </label>
               <Textarea
+                id="notes"
+                name="notes"
                 rows={4}
                 placeholder="Describe what changed in this firmware release…"
                 className="resize-none rounded-[6px] bg-white placeholder:text-muted-foreground"
@@ -78,18 +101,16 @@ export function UploadFirmwareForm() {
           <div className="flex flex-col gap-4">
             <NativeSelect
               label="Region"
-              defaultValue="all"
-              options={[
-                ["all", "All regions"],
-                ["europe", "Europe"],
-                ["us", "United States"],
-                ["other", "Other countries"],
-              ]}
+              name="region"
+              defaultValue="All regions"
+              options={FIRMWARE_REGION_OPTIONS}
             />
-            <NativeSelect label="Hospital" defaultValue="all" options={hospitals} />
-            <p className="text-xs text-muted-foreground">
-              The update will be pushed to devices matching both the selected region and hospital. Leave both as &quot;All&quot; for a global rollout.
-            </p>
+            <NativeSelect
+              label="Device type"
+              name="deviceType"
+              defaultValue="All device types"
+              options={FIRMWARE_DEVICE_TYPE_OPTIONS}
+            />
           </div>
         </Panel>
 
@@ -100,17 +121,10 @@ export function UploadFirmwareForm() {
             label="Deployment type"
             value={deployType}
             onChange={setDeployType}
-            options={[
-              ["immediate", "Deploy immediately on publish"],
-              ["scheduled", "Schedule for a specific date & time"],
-              ["maintenance", "Deploy during next maintenance window"],
-            ]}
+            options={DEPLOY_TYPE_OPTIONS}
           />
           {deployType === "immediate" ? (
             <p className="mt-1 text-xs text-muted-foreground">The update will be pushed to target devices as soon as you click Publish Update.</p>
-          ) : null}
-          {deployType === "maintenance" ? (
-            <p className="mt-1 text-xs text-muted-foreground">The update will be queued and delivered during the next scheduled maintenance window for each device.</p>
           ) : null}
           {deployType === "scheduled" ? (
             <div className="mt-4 grid grid-cols-2 gap-3">
@@ -120,14 +134,16 @@ export function UploadFirmwareForm() {
           ) : null}
         </Panel>
 
-        <PrimaryActionButton
-          render={<Link href="/internal/firmware" />}
-          nativeButton={false}
-          className="self-start bg-brand-teal px-8 text-white hover:bg-brand-teal-dark"
-        >
+        {error ? (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        ) : null}
+
+        <PrimaryActionButton type="submit" className="self-start bg-brand-teal px-8 text-white hover:bg-brand-teal-dark">
           Publish Update
         </PrimaryActionButton>
-      </div>
+      </form>
     </AppShell>
   );
 }

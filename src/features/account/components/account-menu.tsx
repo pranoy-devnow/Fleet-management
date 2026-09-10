@@ -1,16 +1,15 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import { AccountAvatar } from "@/features/account/components/account-avatar";
 import { NotificationCount } from "@/features/account/components/notification-count";
 import {
-  accountProfileHref,
-  accountRolesHref,
+  ACCOUNT_PROFILE_HREF,
+  ACCOUNT_ROLES_HREF,
+  SIGN_OUT_HREF,
   getAccountUser,
-  resolvePortalRole,
 } from "@/features/account/lib/current-user";
 import { PopoverSurface } from "@/features/shell/popover-surface";
 import { useDismiss } from "@/features/shell/use-dismiss";
@@ -23,18 +22,14 @@ import { findRoleByEmail } from "@/features/users/lib/role-permissions";
 import { listMedelaUsers } from "@/features/users/repositories/user-repository";
 
 /**
- * Header account control: initials avatar that opens Profile and Log out.
- * Internal users also get Role management. There is no real session, so Log
- * out returns to the role picker.
+ * Header account control: initials avatar that opens Profile, Role management,
+ * and Log out. There is no real session, so Log out returns to Medela sign-in.
  *
- * Internal Admins see a notification badge for pending access requests. Opening
- * the menu repeats that same count next to Role management so the badge has a
- * destination.
+ * Admins see a notification badge for pending access requests. Opening the menu
+ * repeats that same count next to Role management so the badge has a destination.
  */
 export function AccountMenu() {
-  const pathname = usePathname();
-  const portal = resolvePortalRole(pathname);
-  const user = getAccountUser(portal);
+  const user = getAccountUser();
   const [open, setOpen] = useState(false);
   const rootRef = useDismiss(open, () => setOpen(false));
   const panelId = useId();
@@ -42,8 +37,8 @@ export function AccountMenu() {
 
   const notificationCount = useMemo(() => {
     const platformRole = findRoleByEmail(listMedelaUsers(), user.email);
-    return roleNotificationCount(portal, platformRole, requests.length);
-  }, [portal, requests.length, user.email]);
+    return roleNotificationCount(platformRole, requests.length);
+  }, [requests.length, user.email]);
 
   const notificationLabel =
     notificationCount > 0 ? `, ${describeRoleNotifications(notificationCount)}` : "";
@@ -74,17 +69,15 @@ export function AccountMenu() {
               <p className="truncate text-sm font-semibold text-foreground">{user.name}</p>
               <p className="truncate text-xs text-muted-foreground">{user.email}</p>
             </div>
-            <MenuLink href={accountProfileHref(portal)} onPick={() => setOpen(false)}>
+            <MenuLink href={ACCOUNT_PROFILE_HREF} onPick={() => setOpen(false)}>
               Profile
             </MenuLink>
-            {portal === "internal" ? (
-              <MenuLink href={accountRolesHref(portal)} onPick={() => setOpen(false)}>
-                <span>Role management</span>
-                <NotificationCount count={notificationCount} />
-              </MenuLink>
-            ) : null}
+            <MenuLink href={ACCOUNT_ROLES_HREF} onPick={() => setOpen(false)}>
+              <span>Role management</span>
+              <NotificationCount count={notificationCount} />
+            </MenuLink>
             <div className="border-t border-black/6">
-              <MenuLink href="/" onPick={() => setOpen(false)}>
+              <MenuLink href={SIGN_OUT_HREF} onPick={() => setOpen(false)}>
                 Log out
               </MenuLink>
             </div>

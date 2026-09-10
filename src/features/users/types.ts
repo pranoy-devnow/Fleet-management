@@ -25,19 +25,6 @@ export type MedelaUser = {
 };
 
 /**
- * A hospital staff member. Read-only here — platform roles are Medela-internal.
- */
-export type HospitalUser = {
-  id: string;
-  name: string;
-  email: string;
-  hospital: string;
-  city: string;
-  country: string;
-  initials: string;
-};
-
-/**
  * A person asking for platform access, pending an admin decision.
  */
 export type AccessRequest = {
@@ -50,11 +37,8 @@ export type AccessRequest = {
   initials: string;
 };
 
-/** Which directory the management screen is showing. */
-export type UserDirectoryTab = "medela" | "hospital";
-
 /**
  * Which section of the management screen is visible. Only one shows at a time;
  * `requests` is offered only to viewers who may review them.
  */
-export type UserManagementSection = "requests" | UserDirectoryTab;
+export type UserManagementSection = "requests" | "medela";

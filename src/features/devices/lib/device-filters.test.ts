@@ -5,10 +5,7 @@ import { emptyDeviceFilters, resetDeviceFilter } from "./device-filters";
 describe("emptyDeviceFilters", () => {
   it("leaves every facet open by default", () => {
     expect(emptyDeviceFilters()).toEqual({
-      region: "all",
       status: "all",
-      model: "all",
-      hospital: "all",
       search: "",
     });
   });
@@ -20,12 +17,12 @@ describe("emptyDeviceFilters", () => {
 
 describe("resetDeviceFilter", () => {
   it("clears the named facet and keeps the rest", () => {
-    const filters = { ...emptyDeviceFilters(), region: "europe", status: "failed" };
+    const filters = { ...emptyDeviceFilters(), status: "failed", search: "berlin" };
 
-    const result = resetDeviceFilter(filters, "region");
+    const result = resetDeviceFilter(filters, "status");
 
-    expect(result.region).toBe("all");
-    expect(result.status).toBe("failed");
+    expect(result.status).toBe("all");
+    expect(result.search).toBe("berlin");
   });
 
   it("clears search to an empty string rather than the all sentinel", () => {
@@ -35,10 +32,10 @@ describe("resetDeviceFilter", () => {
   });
 
   it("does not mutate the filters it was given", () => {
-    const filters = { ...emptyDeviceFilters(), region: "europe" };
+    const filters = { ...emptyDeviceFilters(), status: "failed" };
 
-    resetDeviceFilter(filters, "region");
+    resetDeviceFilter(filters, "status");
 
-    expect(filters.region).toBe("europe");
+    expect(filters.status).toBe("failed");
   });
 });

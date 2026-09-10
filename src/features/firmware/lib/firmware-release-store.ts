@@ -1,0 +1,55 @@
+import { listFirmwareReleases } from "../repositories/firmware-repository";
+import type { PublishFirmwareInput } from "../schemas";
+import type { FirmwareRelease } from "../types";
+import { createPublishedRelease } from "./create-published-release";
+
+/**
+ * In-memory firmware catalog so publish, history, and detail share one list.
+ * There is no server: this lives in the module and resets on a full reload.
+ *
+ * @param initial - Starting releases; omit to seed from the fixture catalog
+ */
+export function createFirmwareReleaseStore(
+  initial: readonly FirmwareRelease[] = listFirmwareReleases(),
+) {
+  let releases = initial.map((release) => ({ ...release }));
+  const listeners = new Set<() => void>();
+
+  function emit() {
+    for (const listener of listeners) listener();
+  }
+
+  return {
+    /**
+     * Current catalog. Callers must not mutate the array.
+     */
+    getSnapshot(): FirmwareRelease[] {
+      return releases;
+    },
+
+    /**
+     * Subscribe to catalog changes. Returns an unsubscribe function.
+     */
+    subscribe(listener: () => void): () => void {
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+
+    /**
+     * Prepends a published release and notifies subscribers.
+     *
+     * @param input - Validated publish-form fields
+     * @param now - Clock for the release date; inject in tests
+     */
+    publish(input: PublishFirmwareInput, now: Date = new Date()): FirmwareRelease {
+      const release = createPublishedRelease(input, now);
+      releases = [release, ...releases];
+      emit();
+      return release;
+    },
+  };
+}
+
+export const firmwareReleaseStore = createFirmwareReleaseStore();

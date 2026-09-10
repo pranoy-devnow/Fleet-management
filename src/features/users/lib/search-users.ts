@@ -1,4 +1,4 @@
-import type { HospitalUser, MedelaUser } from "../types";
+import type { MedelaUser } from "../types";
 
 /**
  * Narrows Medela staff by a free-text query.
@@ -22,32 +22,6 @@ export function searchMedelaUsers(
       includes(user.name, term) ||
       includes(user.email, term) ||
       includes(user.department, term),
-  );
-}
-
-/**
- * Narrows hospital staff by a free-text query.
- *
- * Matches name, email, hospital, city, and country.
- *
- * @param users - Staff to search
- * @param query - Free text; blank or whitespace returns everyone
- * @returns Matching users in their original order
- */
-export function searchHospitalUsers(
-  users: readonly HospitalUser[],
-  query: string,
-): HospitalUser[] {
-  const term = normalize(query);
-  if (term === "") return [...users];
-
-  return users.filter(
-    (user) =>
-      includes(user.name, term) ||
-      includes(user.email, term) ||
-      includes(user.hospital, term) ||
-      includes(user.city, term) ||
-      includes(user.country, term),
   );
 }
 

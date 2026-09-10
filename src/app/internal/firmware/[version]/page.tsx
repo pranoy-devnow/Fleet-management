@@ -1,19 +1,20 @@
-import { notFound } from "next/navigation";
-
 import { FirmwareDetail } from "@/features/firmware/components/firmware-detail";
-import { getFirmwareRelease } from "@/features/firmware/repositories/firmware-repository";
 
 export default async function FirmwareDetailPage({
   params,
   searchParams,
 }: {
   params: Promise<{ version: string }>;
-  searchParams: Promise<{ model?: string }>;
+  searchParams: Promise<{ deviceType?: string; model?: string }>;
 }) {
   const { version } = await params;
-  const { model } = await searchParams;
-  const release = getFirmwareRelease(decodeURIComponent(version), model ?? "Freestyle Hands-free");
-  if (!release) notFound();
+  const query = await searchParams;
+  const deviceType = query.deviceType ?? query.model ?? "Freestyle Hands-free";
 
-  return <FirmwareDetail release={release} />;
+  return (
+    <FirmwareDetail
+      version={decodeURIComponent(version)}
+      deviceType={deviceType}
+    />
+  );
 }

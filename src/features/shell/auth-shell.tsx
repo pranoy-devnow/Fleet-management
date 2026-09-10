@@ -4,9 +4,8 @@ import { Panel } from "@/features/shell/panel";
 /**
  * Frame for the login and register screens.
  *
- * Same black field and large lockup as `/`, with the form in the same white
- * card. Arriving here from the account picker is a continuation, not a jump
- * to a different-looking product.
+ * Black field and large lockup, with the form in a white card. `/` redirects
+ * here, so arriving at sign-in is the start of the product.
  */
 export function AuthShell({ children }: { children: React.ReactNode }) {
   return (

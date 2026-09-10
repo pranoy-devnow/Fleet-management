@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 
 /**
- * Search row used by the header popover and the registration country list.
+ * Search row used by searchable lists.
  * Icon plus an unstyled input, sitting on a hairline above the results.
  *
  * @param value - Current query

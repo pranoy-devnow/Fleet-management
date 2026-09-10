@@ -4,22 +4,22 @@ Shared chrome: brand-yellow header, grouped lists, list filter controls, auth fr
 
 ## How to use
 
-Wrap authenticated pages in `AppShell`. Use `variant="form"` on firmware publish/edit to show the sign-off card. Use `fill` on list pages and the internal overview so chrome stays put and the list or map fills the leftover laptop height.
+Wrap authenticated pages in `AppShell`. Use `variant="form"` on firmware publish/edit to show the sign-off card. Use `fill` on list pages so chrome stays put and the list fills the leftover laptop height. Pass `fleetNav` on the three fleet screens so `FleetNavTabs` sits in the same slot above the page; that also locks the viewport so upload uses the same main padding as the lists. Pass `header` on `GroupedList` when title, actions, or filters should sit inside the same card as the rows.
 
-The header search pill filters devices. Under `/biomed` it searches the biomed's live device list through `useAssignedDevices`, so a device added this session is findable; elsewhere it searches the global fleet.
+`FleetNavTabs` is the Devices / Firmware history / Upload firmware switcher. `resolveFleetTab` picks the selected tab from the path. The Devices tab count lives in `fleetNavCountStore` so the list can update a badge that AppShell renders.
 
 ### List toolbars
 
 Filterable lists compose one row from these parts, in this order:
 
 - `SearchField` — pill used in list toolbars (`bg-black/5`, icon then input)
-- `SearchInputRow` — icon plus input on a hairline, used by the header popover and the registration country list
+- `SearchInputRow` — icon plus input on a hairline, used by searchable lists
 - `SegmentedControl` — the single filter axis that stays visible
-- `FilterMenu` — every other facet, collapsed behind one trigger that shows an active count
-- `SortMenu` — sort key and direction
+- `FilterMenu` — extra facets behind one trigger (unused on the current fleet lists)
+- `SortMenu` — sort key and direction (unused on the current fleet lists)
 - `ActiveFilterChips` — sits under the row and names what is currently narrowing the list
 
-`PopoverSurface` is the floating panel shared by the header search and both menus. `useDismiss` gives any popover outside-press and Escape handling.
+`PopoverSurface` is the floating panel shared by the account menu and both list menus. `useDismiss` gives any popover outside-press and Escape handling.
 
 ### Dialogs
 
@@ -28,14 +28,15 @@ Filterable lists compose one row from these parts, in this order:
 
 ### Searchable lists and tooltips
 
-- `SearchableListPanel` — `SearchInputRow` on a hairline above a list. Used by the registration country picker (`h-72`, scrolling) and the user directory (`scroll={false}`).
+- `SearchableListPanel` — `SearchInputRow` on a hairline above a list. Used by the user directory (`scroll={false}`).
 - `InfoTooltip` — info icon on base-ui's tooltip. Opens on hover and on keyboard focus.
-- `StepHeading` — "Step N of M" progress plus title and subtitle for multi-step forms. Used by biomed registration and the add-device dialog. Pass `titleId` when a dialog labels itself with the heading.
+- `StepHeading` — "Step N of M" progress plus title and subtitle for multi-step forms. Pass `titleId` when a dialog labels itself with the heading.
 
 ## Gotchas
 
-- Logo goes to the role home (`/internal` or `/biomed`), not the role picker.
-- The header avatar opens Profile and Log out. Internal users also get Role management. Log out still goes to `/`.
+- `fleetNav` also locks the viewport. Upload used to use `py-10` and a `max-w-2xl` wrapper around the tabs, which moved the tab bar relative to the list pages.
+- Logo goes to `/internal`.
+- The header avatar opens Profile, Role management, and Log out. Log out goes to `/login/medela`.
 - `SegmentedControl` and `FilterMenu` are built on native radio inputs, so arrow keys navigate and the selected state is announced. Each instance scopes its own `name` via `useId`, so two controls on one page never share a group.
 - Keep a facet in either `SegmentedControl` or `FilterMenu`, never both — one filter, one UI path. `ActiveFilterChips` therefore skips the segmented axis, since that control already shows its own state.
 - `FilterMenu` renders the `all` option as a bare "All"; the section heading already names the facet.

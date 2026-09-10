@@ -7,21 +7,26 @@ import { cn } from "@/lib/utils";
 /**
  * Settings-style grouped list surface.
  *
+ * @param header - Optional title, actions, or filters above the rows. Stays
+ *   put when `scroll` is on so only the rows move.
  * @param footer - Optional count or hint under the rows
  * @param scroll - When true, rows scroll inside the panel and the footer stays
  *   visible. Use on `AppShell fill` pages so only the list moves.
  */
 export function GroupedList({
   children,
+  header,
   footer,
   scroll = false,
 }: {
   children: React.ReactNode;
+  header?: React.ReactNode;
   footer?: React.ReactNode;
   scroll?: boolean;
 }) {
   return (
     <Panel className={cn("overflow-hidden", scroll && "flex min-h-0 flex-1 flex-col")}>
+      {header ? <div className="shrink-0">{header}</div> : null}
       <div className={cn("divide-y divide-black/6", scroll && "min-h-0 flex-1 overflow-y-auto")}>
         {children}
       </div>

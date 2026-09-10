@@ -1,21 +1,19 @@
 import { AccountAvatar } from "@/features/account/components/account-avatar";
 import { getAccountUser } from "@/features/account/lib/current-user";
-import type { PortalRole } from "@/features/account/types";
 import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
 import { Panel } from "@/features/shell/panel";
 
 /**
- * Read-only profile for the prototype signed-in user.
+ * Read-only profile for the prototype signed-in Medela Internal user.
  *
- * @param role - Portal whose fixture user is shown
  * @param homeHref - Where the back link returns
  */
-export function ProfileScreen({ role, homeHref }: { role: PortalRole; homeHref: string }) {
-  const user = getAccountUser(role);
+export function ProfileScreen({ homeHref }: { homeHref: string }) {
+  const user = getAccountUser();
 
   return (
-    <AppShell title="Profile" subtitle="Your account details for this portal">
+    <AppShell title="Profile" subtitle="Your account details">
       <BackLink href={homeHref} label="Overview" />
       <div className="max-w-xl">
         <Panel className="p-6">

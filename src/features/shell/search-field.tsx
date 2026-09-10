@@ -3,8 +3,7 @@
 import { Search } from "lucide-react";
 
 /**
- * Rounded search pill used on list toolbars and the registration location
- * picker. Matches the header search: fill, no ring, icon then input.
+ * Rounded search pill used on list toolbars. Fill, no ring, icon then input.
  *
  * @param value - Current query
  * @param onChange - Receives the new query

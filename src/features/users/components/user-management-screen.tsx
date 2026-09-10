@@ -9,7 +9,6 @@ import { SearchableListPanel } from "@/features/shell/searchable-list-panel";
 import { SegmentedControl } from "@/features/shell/segmented-control";
 
 import { AccessRequestList } from "./access-request-list";
-import { HospitalUserRow } from "./hospital-user-row";
 import { MedelaUserRow } from "./medela-user-row";
 import { RoleInfoTooltip } from "./role-info-tooltip";
 import { useAccessRequests } from "../hooks/use-access-requests";
@@ -17,29 +16,16 @@ import { assignRole } from "../lib/assign-role";
 import { admitAcceptedUser } from "../lib/decide-access-request";
 import { describeViewerAccess } from "../lib/describe-viewer-access";
 import { findRoleByEmail, hasPermission } from "../lib/role-permissions";
-import { searchHospitalUsers, searchMedelaUsers } from "../lib/search-users";
-import { listHospitalUsers, listMedelaUsers } from "../repositories/user-repository";
-import type {
-  HospitalUser,
-  MedelaUser,
-  PlatformRole,
-  UserDirectoryTab,
-  UserManagementSection,
-} from "../types";
+import { searchMedelaUsers } from "../lib/search-users";
+import { listMedelaUsers } from "../repositories/user-repository";
+import type { MedelaUser, PlatformRole, UserManagementSection } from "../types";
 
-const DIRECTORY_LABELS: Record<UserDirectoryTab, string> = {
-  medela: "Medela users",
-  hospital: "Hospital staff",
-};
-
-const SEARCH_PLACEHOLDERS: Record<UserDirectoryTab, string> = {
-  medela: "Search name, email, or department",
-  hospital: "Search name, hospital, or country",
-};
+const MEDELA_DIRECTORY_LABEL = "Medela users";
+const MEDELA_SEARCH_PLACEHOLDER = "Search name, email, or department";
 
 /**
- * User management for `/internal/roles`. Requests, Medela users, and hospital
- * staff are three sections behind one switch, so exactly one is on screen.
+ * User management for `/internal/roles`. Requests and Medela users are two
+ * sections behind one switch, so exactly one is on screen.
  *
  * All state is local. Nothing here enforces the permissions it describes —
  * gating routes needs a real session, which the prototype does not have.
@@ -51,8 +37,7 @@ export function UserManagementScreen({ homeHref }: { homeHref: string }) {
   const { requests, decide } = useAccessRequests();
   const [query, setQuery] = useState("");
 
-  const hospitalUsers = useMemo(() => listHospitalUsers(), []);
-  const viewer = getAccountUser("internal");
+  const viewer = getAccountUser();
   const viewerRole = findRoleByEmail(medelaUsers, viewer.email);
   const canReviewRequests = hasPermission(viewerRole, "requests:review");
 
@@ -66,10 +51,6 @@ export function UserManagementScreen({ homeHref }: { homeHref: string }) {
     () => searchMedelaUsers(medelaUsers, query),
     [medelaUsers, query],
   );
-  const hospitalResults = useMemo(
-    () => searchHospitalUsers(hospitalUsers, query),
-    [hospitalUsers, query],
-  );
 
   const sectionOptions: ReadonlyArray<readonly [UserManagementSection, string]> = [
     ...(canReviewRequests
@@ -80,14 +61,12 @@ export function UserManagementScreen({ homeHref }: { homeHref: string }) {
           ],
         ] as const)
       : []),
-    ["medela", DIRECTORY_LABELS.medela],
-    ["hospital", DIRECTORY_LABELS.hospital],
+    ["medela", MEDELA_DIRECTORY_LABEL],
   ];
 
   function onSwitchSection(next: string) {
     setSection(next as UserManagementSection);
-    // A query written for one directory rarely matches the other, and a hidden
-    // filter on arrival reads as an empty list.
+    // A query written for the directory should not hide the requests list.
     setQuery("");
   }
 
@@ -119,14 +98,11 @@ export function UserManagementScreen({ homeHref }: { homeHref: string }) {
         {section === "requests" ? (
           <AccessRequestList requests={requests} onDecide={onDecideRequest} />
         ) : (
-          <DirectorySection
-            tab={section}
+          <MedelaDirectory
             query={query}
             onQueryChange={setQuery}
-            medelaResults={medelaResults}
-            hospitalResults={hospitalResults}
-            medelaTotal={medelaUsers.length}
-            hospitalTotal={hospitalUsers.length}
+            results={medelaResults}
+            total={medelaUsers.length}
             canAssign={canReviewRequests}
             onAssign={onAssign}
           />
@@ -136,53 +112,41 @@ export function UserManagementScreen({ homeHref }: { homeHref: string }) {
   );
 }
 
-function DirectorySection({
-  tab,
+function MedelaDirectory({
   query,
   onQueryChange,
-  medelaResults,
-  hospitalResults,
-  medelaTotal,
-  hospitalTotal,
+  results,
+  total,
   canAssign,
   onAssign,
 }: {
-  tab: UserDirectoryTab;
   query: string;
   onQueryChange: (value: string) => void;
-  medelaResults: readonly MedelaUser[];
-  hospitalResults: readonly HospitalUser[];
-  medelaTotal: number;
-  hospitalTotal: number;
+  results: readonly MedelaUser[];
+  total: number;
   canAssign: boolean;
   onAssign: (userId: string, role: PlatformRole) => void;
 }) {
-  const showingMedela = tab === "medela";
-  const resultCount = showingMedela ? medelaResults.length : hospitalResults.length;
-  const totalCount = showingMedela ? medelaTotal : hospitalTotal;
-
   return (
     <SearchableListPanel
       query={query}
       onQueryChange={onQueryChange}
-      placeholder={SEARCH_PLACEHOLDERS[tab]}
-      searchLabel={`Search ${DIRECTORY_LABELS[tab].toLowerCase()}`}
-      listLabel={DIRECTORY_LABELS[tab]}
-      announcement={`${resultCount} of ${totalCount} people match`}
+      placeholder={MEDELA_SEARCH_PLACEHOLDER}
+      searchLabel={`Search ${MEDELA_DIRECTORY_LABEL.toLowerCase()}`}
+      listLabel={MEDELA_DIRECTORY_LABEL}
+      announcement={`${results.length} of ${total} people match`}
       emptyMessage="Nobody matches that search."
-      isEmpty={resultCount === 0}
+      isEmpty={results.length === 0}
       scroll={false}
     >
-      {showingMedela
-        ? medelaResults.map((user) => (
-            <MedelaUserRow
-              key={user.id}
-              user={user}
-              canAssign={canAssign}
-              onAssign={(role) => onAssign(user.id, role)}
-            />
-          ))
-        : hospitalResults.map((user) => <HospitalUserRow key={user.id} user={user} />)}
+      {results.map((user) => (
+        <MedelaUserRow
+          key={user.id}
+          user={user}
+          canAssign={canAssign}
+          onAssign={(role) => onAssign(user.id, role)}
+        />
+      ))}
     </SearchableListPanel>
   );
 }

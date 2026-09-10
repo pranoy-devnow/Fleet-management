@@ -1,41 +1,27 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  accountHomeHref,
-  accountProfileHref,
-  accountRolesHref,
+  ACCOUNT_HOME_HREF,
+  ACCOUNT_PROFILE_HREF,
+  ACCOUNT_ROLES_HREF,
+  SIGN_OUT_HREF,
   getAccountUser,
-  resolvePortalRole,
 } from "./current-user";
 
-describe("resolvePortalRole", () => {
-  it("treats biomed routes as hospital staff", () => {
-    expect(resolvePortalRole("/biomed/devices/KF-1")).toBe("biomed");
-  });
-
-  it("treats every other authenticated path as internal", () => {
-    expect(resolvePortalRole("/internal/firmware")).toBe("internal");
-  });
-
-  it("does not treat a path that merely contains biomed as hospital staff", () => {
-    expect(resolvePortalRole("/internal/biomed-notes")).toBe("internal");
-  });
-});
-
 describe("account hrefs", () => {
-  it("keeps profile and roles under the current portal", () => {
-    expect(accountHomeHref("biomed")).toBe("/biomed");
-    expect(accountProfileHref("internal")).toBe("/internal/profile");
-    expect(accountRolesHref("biomed")).toBe("/biomed/roles");
+  it("keeps profile and roles under the internal portal", () => {
+    expect(ACCOUNT_HOME_HREF).toBe("/internal");
+    expect(ACCOUNT_PROFILE_HREF).toBe("/internal/profile");
+    expect(ACCOUNT_ROLES_HREF).toBe("/internal/roles");
+  });
+
+  it("returns log out to Medela sign-in", () => {
+    expect(SIGN_OUT_HREF).toBe("/login/medela");
   });
 });
 
 describe("getAccountUser", () => {
-  it("returns the Medela staff fixture for the internal portal", () => {
-    expect(getAccountUser("internal").email).toBe("sarah.chen@medela.com");
-  });
-
-  it("returns the hospital fixture for the biomed portal", () => {
-    expect(getAccountUser("biomed").name).toBe("Dr. Marco Rossi");
+  it("returns the Medela staff fixture", () => {
+    expect(getAccountUser().email).toBe("sarah.chen@medela.com");
   });
 });

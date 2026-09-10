@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Frosted floating panel shared by the header search and the list menus.
+ * Frosted floating panel shared by the account menu and the list menus.
  * Positioning is left to the caller so each trigger can anchor its own way.
  *
  * @param className - Positioning and sizing utilities, e.g. `top-full right-0 w-72`

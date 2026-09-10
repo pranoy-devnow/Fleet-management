@@ -9,8 +9,6 @@ const devices: WorldDevice[] = [
     city: "Berlin",
     country: "Germany",
     region: "europe",
-    lat: 52,
-    lon: 13,
     status: "needs-update",
     hospital: "Charité — NICU Ward 3",
     firmware: "v2.3.1",
@@ -21,8 +19,6 @@ const devices: WorldDevice[] = [
     city: "Tokyo",
     country: "Japan",
     region: "asia-pacific",
-    lat: 35,
-    lon: 139,
     status: "updated",
     hospital: "Tokyo University Hospital",
     firmware: "v2.4.0",
@@ -31,10 +27,7 @@ const devices: WorldDevice[] = [
 ];
 
 const openFilters: DeviceFilters = {
-  region: "all",
   status: "all",
-  model: "all",
-  hospital: "all",
   search: "",
 };
 
@@ -43,9 +36,9 @@ describe("filterWorldDevices", () => {
     expect(filterWorldDevices(devices, openFilters)).toHaveLength(2);
   });
 
-  it("returns only devices in the selected region", () => {
-    const result = filterWorldDevices(devices, { ...openFilters, region: "europe" });
-    expect(result.map((device) => device.id)).toEqual(["KF-1"]);
+  it("returns only devices with the selected status", () => {
+    const result = filterWorldDevices(devices, { ...openFilters, status: "updated" });
+    expect(result.map((device) => device.id)).toEqual(["KF-2"]);
   });
 
   it("returns an empty list when no device matches the search", () => {
@@ -53,8 +46,8 @@ describe("filterWorldDevices", () => {
     expect(result).toEqual([]);
   });
 
-  it("matches hospital with a partial, case-insensitive name", () => {
-    const result = filterWorldDevices(devices, { ...openFilters, hospital: "charité" });
+  it("matches hospital names through search", () => {
+    const result = filterWorldDevices(devices, { ...openFilters, search: "charité" });
     expect(result).toHaveLength(1);
     expect(result[0]?.id).toBe("KF-1");
   });
@@ -67,5 +60,9 @@ describe("hasActiveDeviceFilters", () => {
 
   it("returns true when search has non-whitespace text", () => {
     expect(hasActiveDeviceFilters({ ...openFilters, search: " berlin " })).toBe(true);
+  });
+
+  it("returns true when a status is selected", () => {
+    expect(hasActiveDeviceFilters({ ...openFilters, status: "failed" })).toBe(true);
   });
 });

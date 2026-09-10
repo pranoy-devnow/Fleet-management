@@ -1,40 +1,35 @@
-import type { FirmwareFilters, FirmwareRelease } from "../types";
-
-const ALL = "all";
+import type { FirmwareRelease } from "../types";
 
 /**
- * Filters firmware releases by region, model, status, and version/notes search.
+ * Returns releases whose version, notes, device type, or region contain the
+ * search text. Blank or whitespace-only search returns every release.
+ *
+ * @param releases - Published firmware packages
+ * @param search - Free-text query
  */
 export function filterFirmwareReleases(
   releases: FirmwareRelease[],
-  filters: FirmwareFilters,
+  search: string,
 ): FirmwareRelease[] {
-  const search = filters.search.trim().toLowerCase();
-
-  return releases.filter((release) => {
-    if (filters.region !== ALL && release.region !== filters.region) return false;
-    if (filters.model !== ALL && release.model !== filters.model) return false;
-    if (filters.status !== ALL && release.status !== filters.status) return false;
-    if (search && !matchesSearch(release, search)) return false;
-    return true;
-  });
+  const query = search.trim().toLowerCase();
+  if (!query) return releases;
+  return releases.filter((release) => matchesSearch(release, query));
 }
 
 /**
- * True when any firmware history filter is active.
+ * True when the history search box is narrowing the list.
+ *
+ * @param search - Current query
  */
-export function hasActiveFirmwareFilters(filters: FirmwareFilters): boolean {
-  return (
-    filters.region !== ALL ||
-    filters.model !== ALL ||
-    filters.status !== ALL ||
-    filters.search.trim() !== ""
-  );
+export function hasActiveFirmwareSearch(search: string): boolean {
+  return search.trim() !== "";
 }
 
 function matchesSearch(release: FirmwareRelease, search: string): boolean {
   return (
     release.version.toLowerCase().includes(search) ||
-    release.notes.toLowerCase().includes(search)
+    release.notes.toLowerCase().includes(search) ||
+    release.deviceType.toLowerCase().includes(search) ||
+    release.region.toLowerCase().includes(search)
   );
 }

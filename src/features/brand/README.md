@@ -6,7 +6,7 @@ The official Medela identity: the lockup, the trefoil mark, and the palette they
 
 - `MedelaLogo` — the full horizontal lockup. Use it wherever the product needs to identify itself: auth screens, the app header, empty states. Set a height class (`h-7`, `h-9`) and let the 168:32 ratio pick the width. The wordmark follows `currentColor`, so `text-white` inverts it for dark surfaces.
 - `MedelaMark` — the trefoil on its own, for tight spots (favicons, compact headers) and as oversized artwork. It is `aria-hidden`, so give it visible accompanying text.
-- `BrandFocusLayout` — the black auth frame (large lockup, watermark). `/`, login and register all use it; put the white card in the children. The lockup is parked at a fixed viewport offset so a growing form cannot move it; only the card scrolls.
+- `BrandFocusLayout` — the black auth frame (large lockup, watermark). Login and register use it; put the white card in the children. The lockup is parked at a fixed viewport offset so a growing form cannot move it; only the card scrolls.
 - `public/medela-logo.svg` and `public/medela-mark.svg` — the same artwork as static files, for `<link rel="icon">`, Open Graph images, and anything outside React.
 
 Brand colours live as `--brand-*` tokens in `src/app/globals.css` and are exposed to Tailwind as `brand-yellow`, `brand-teal`, `brand-orange`, and `brand-ink`.

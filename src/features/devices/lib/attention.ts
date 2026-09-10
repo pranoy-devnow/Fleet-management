@@ -1,7 +1,10 @@
-import type { AssignedDevice, DeviceStatus, WorldDevice } from "../types";
+import type { DeviceStatus, WorldDevice } from "../types";
 
 /**
  * Failed first, then pending updates. Updated devices are excluded.
+ *
+ * @param devices - Fleet devices to scan
+ * @returns Devices that need attention, failed first
  */
 export function devicesNeedingAttention<T extends { status: DeviceStatus }>(devices: T[]): T[] {
   return devices
@@ -11,6 +14,8 @@ export function devicesNeedingAttention<T extends { status: DeviceStatus }>(devi
 
 /**
  * Recommended next step for a device that is not current.
+ *
+ * @param status - Device firmware status
  */
 export function recommendedAction(status: DeviceStatus): { label: string; kind: "retry" | "pending" } | null {
   if (status === "failed") return { label: "Retry update", kind: "retry" };
@@ -18,7 +23,12 @@ export function recommendedAction(status: DeviceStatus): { label: string; kind: 
   return null;
 }
 
-export function attentionSentence(devices: Array<AssignedDevice | WorldDevice>): string {
+/**
+ * Summarizes how many fleet devices need a retry or a pending update.
+ *
+ * @param devices - Fleet to summarize
+ */
+export function attentionSentence(devices: readonly WorldDevice[]): string {
   const failed = devices.filter((device) => device.status === "failed").length;
   const pending = devices.filter((device) => device.status === "needs-update").length;
   if (failed === 0 && pending === 0) return "Everything is current.";

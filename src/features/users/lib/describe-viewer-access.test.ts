@@ -12,6 +12,6 @@ describe("describeViewerAccess", () => {
   });
 
   it("falls back to a directory label when the viewer has no role", () => {
-    expect(describeViewerAccess(null)).toBe("Directory of Medela users and hospital staff");
+    expect(describeViewerAccess(null)).toBe("Directory of Medela Internal users");
   });
 });

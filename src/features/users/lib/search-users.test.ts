@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import type { HospitalUser, MedelaUser } from "../types";
-import { searchHospitalUsers, searchMedelaUsers } from "./search-users";
+import type { MedelaUser } from "../types";
+import { searchMedelaUsers } from "./search-users";
 
 const medela: MedelaUser[] = [
   {
@@ -19,27 +19,6 @@ const medela: MedelaUser[] = [
     department: "Field Service",
     role: "it",
     initials: "TM",
-  },
-];
-
-const hospital: HospitalUser[] = [
-  {
-    id: "hu-01",
-    name: "Dr. Marco Rossi",
-    email: "bioeng@charite.de",
-    hospital: "Charité — NICU Ward 3",
-    city: "Berlin",
-    country: "Germany",
-    initials: "MR",
-  },
-  {
-    id: "hu-07",
-    name: "Kenji Sato",
-    email: "k.sato@todai-hosp.jp",
-    hospital: "Tokyo University Hospital",
-    city: "Tokyo",
-    country: "Japan",
-    initials: "KS",
   },
 ];
 
@@ -77,30 +56,5 @@ describe("searchMedelaUsers", () => {
 
   it("does not alias the input list", () => {
     expect(searchMedelaUsers(medela, "")).not.toBe(medela);
-  });
-});
-
-describe("searchHospitalUsers", () => {
-  it("returns everyone for a blank query", () => {
-    expect(searchHospitalUsers(hospital, "")).toHaveLength(2);
-  });
-
-  it("matches on hospital name", () => {
-    const result = searchHospitalUsers(hospital, "charité");
-    expect(result.map((user) => user.id)).toEqual(["hu-01"]);
-  });
-
-  it("matches on city", () => {
-    const result = searchHospitalUsers(hospital, "tokyo");
-    expect(result.map((user) => user.id)).toEqual(["hu-07"]);
-  });
-
-  it("matches on country", () => {
-    const result = searchHospitalUsers(hospital, "germany");
-    expect(result.map((user) => user.id)).toEqual(["hu-01"]);
-  });
-
-  it("returns an empty list when nothing matches", () => {
-    expect(searchHospitalUsers(hospital, "zzz")).toEqual([]);
   });
 });

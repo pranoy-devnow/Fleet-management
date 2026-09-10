@@ -5,31 +5,13 @@
 export type DeviceStatus = "needs-update" | "updated" | "failed";
 
 /**
- * A device assigned to a hospital biomed, shown in hospital-staff lists.
- */
-export type AssignedDevice = {
-  id: string;
-  hospital: string;
-  ward: string;
-  status: DeviceStatus;
-  firmware: string;
-  isNew?: boolean;
-  /** Country the device is installed in. Only set for devices added in-app. */
-  country?: string;
-  /** Pump model. Only set for devices added in-app; older fixtures predate it. */
-  model?: string;
-};
-
-/**
- * A geo-located fleet device used on maps and the internal device table.
+ * A fleet device used on the internal device table.
  */
 export type WorldDevice = {
   id: string;
   city: string;
   country: string;
   region: string;
-  lat: number;
-  lon: number;
   status: DeviceStatus;
   hospital: string;
   firmware: string;
@@ -37,24 +19,22 @@ export type WorldDevice = {
 };
 
 /**
- * A country the fleet operates in. Used as the location a biomed picks when
- * registering a device, before naming their hospital.
- */
-export type DeviceCountry = {
-  country: string;
-  /** Display label for the sales region, e.g. "North America". */
-  regionLabel: string;
-};
-
-/**
- * Filter values for the global fleet map and device table.
+ * Filter values for the internal device table.
  */
 export type DeviceFilters = {
-  region: string;
   status: string;
-  model: string;
-  hospital: string;
   search: string;
 };
 
-export type DeviceSortKey = "id" | "city" | "status" | "firmware";
+/** One past or current firmware install on a single device. */
+export type DeviceFirmwareLogEntry = {
+  version: string;
+  installedOn: string;
+  notes: string;
+};
+
+/** The firmware a device should receive next. */
+export type FirmwareUpdateOffer = {
+  version: string;
+  notes: string;
+};

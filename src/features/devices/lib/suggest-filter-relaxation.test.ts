@@ -9,8 +9,6 @@ function makeDevice(overrides: Partial<WorldDevice> & { id: string }): WorldDevi
     city: "Berlin",
     country: "Germany",
     region: "europe",
-    lat: 52,
-    lon: 13,
     status: "updated",
     hospital: "Charité",
     firmware: "v2.4.0",
@@ -20,10 +18,9 @@ function makeDevice(overrides: Partial<WorldDevice> & { id: string }): WorldDevi
 }
 
 const devices: WorldDevice[] = [
-  makeDevice({ id: "KF-1", status: "needs-update", model: "Symphony" }),
-  makeDevice({ id: "KF-2", city: "Tokyo", region: "asia-pacific", model: "Swing Maxi" }),
-  makeDevice({ id: "KF-3", city: "Munich", model: "Swing Maxi" }),
-  makeDevice({ id: "KF-4", city: "Osaka", region: "asia-pacific", model: "Swing Maxi" }),
+  makeDevice({ id: "KF-1", status: "needs-update" }),
+  makeDevice({ id: "KF-2", city: "Tokyo", status: "updated" }),
+  makeDevice({ id: "KF-3", city: "Munich", status: "updated" }),
 ];
 
 const openFilters = emptyDeviceFilters();
@@ -33,43 +30,41 @@ describe("suggestFilterRelaxation", () => {
     expect(suggestFilterRelaxation(devices, openFilters)).toBeNull();
   });
 
-  it("suggests the status filter when clearing it reveals the region again", () => {
+  it("suggests clearing status when that status matches nothing", () => {
     const result = suggestFilterRelaxation(devices, {
       ...openFilters,
-      region: "europe",
       status: "failed",
     });
 
-    expect(result).toEqual({ key: "status", facetLabel: "Status", count: 2 });
+    expect(result).toEqual({ key: "status", facetLabel: "Status", count: 3 });
   });
 
-  it("picks the removal that reveals the most devices, not the first one", () => {
+  it("picks the removal that reveals the most devices", () => {
     const result = suggestFilterRelaxation(devices, {
       ...openFilters,
-      region: "asia-pacific",
-      model: "Symphony",
+      status: "failed",
+      search: "tokyo",
     });
 
-    // Clearing model leaves the two Asia Pacific devices; clearing region
-    // leaves only the single Symphony.
-    expect(result).toEqual({ key: "model", facetLabel: "Model", count: 2 });
+    // Clearing status leaves the Tokyo device; clearing search still matches none.
+    expect(result).toEqual({ key: "status", facetLabel: "Status", count: 1 });
   });
 
   it("breaks a tie in favour of the less intentional filter", () => {
     const result = suggestFilterRelaxation(devices, {
       ...openFilters,
-      model: "Symphony",
+      status: "needs-update",
       search: "tokyo",
     });
 
-    expect(result?.key).toBe("model");
+    expect(result?.key).toBe("status");
     expect(result?.count).toBe(1);
   });
 
   it("returns null when no single removal reveals anything", () => {
     const result = suggestFilterRelaxation(devices, {
       ...openFilters,
-      region: "antarctica",
+      status: "failed",
       search: "zzz",
     });
 
@@ -77,6 +72,6 @@ describe("suggestFilterRelaxation", () => {
   });
 
   it("returns null for an empty fleet", () => {
-    expect(suggestFilterRelaxation([], { ...openFilters, region: "europe" })).toBeNull();
+    expect(suggestFilterRelaxation([], { ...openFilters, status: "failed" })).toBeNull();
   });
 });

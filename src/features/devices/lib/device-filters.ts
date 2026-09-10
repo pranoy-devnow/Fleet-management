@@ -7,16 +7,13 @@ export type DeviceFilterKey = keyof DeviceFilters;
 
 /**
  * Filters with nothing narrowed, optionally pinned to a starting status so
- * routes like `/internal/devices?status=failed` can deep-link.
+ * routes like `/internal?status=failed` can deep-link.
  *
  * @param status - Status to preselect; defaults to showing every status
  */
 export function emptyDeviceFilters(status: string = ALL_FILTER_VALUE): DeviceFilters {
   return {
-    region: ALL_FILTER_VALUE,
     status,
-    model: ALL_FILTER_VALUE,
-    hospital: ALL_FILTER_VALUE,
     search: "",
   };
 }

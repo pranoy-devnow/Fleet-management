@@ -8,7 +8,7 @@
  * @param initials - Two-letter mark for the person
  * @param name - Display name
  * @param email - Address shown under the name
- * @param detail - Secondary line, e.g. department or hospital and city
+ * @param detail - Secondary line, e.g. department
  * @param trailing - Role badge or role menu, omitted for read-only lists
  */
 export function UserRow({

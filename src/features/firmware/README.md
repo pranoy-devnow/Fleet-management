@@ -5,20 +5,19 @@ Release history and the publish form.
 ## How to use
 
 - `/internal/firmware` — history table
-- `/internal/firmware/upload` — publish form; Publish Update returns to history
-- `/internal/firmware/[version]?model=` — detail (version is not unique without model)
+- `/internal/firmware/upload` — publish form; Publish Update prepends a release and returns to history
+- `/internal/firmware/[version]?deviceType=` — read-only detail (version is not unique without device type)
 
-### Filter state
+`AppShell fleetNav` renders Devices / Firmware history / Upload firmware in the same slot on every tab screen, including upload. List pages also pass `fill` so only the rows scroll.
 
-- `emptyFirmwareFilters()` — the default filter set
-- `resetFirmwareFilter(filters, key)` — clears one facet; backs chip removal
-- `describeFirmwareFilters(filters)` — resolves active filters to chip labels
+History has a search field (`filterFirmwareReleases` matches version, notes, device type, and region). Rows do not show a status chip. There is no sort control; history is already newest-first.
 
-`FirmwareListToolbar` composes the shell's search field, segmented control, and filter menu. It has no sort control; history is already newest-first.
+### Deployment target
+
+Publish, history, and detail share one catalog (`firmwareReleaseStore`) and the same target fields: **region** and **device type**. Hospital is not a firmware target. Option lists live in `FIRMWARE_REGION_VALUES` / `FIRMWARE_DEVICE_TYPE_VALUES`.
 
 ## Gotchas
 
-- `getFirmwareRelease` requires both version and model.
-- Release status is the visible segmented axis, so `describeFirmwareFilters` omits it — one filter, one UI path.
+- `findFirmwareRelease` requires both version and device type.
 - The `upload` folder must stay so it is not captured by `[version]`.
-- Publish does not persist a new release; it returns to history.
+- Published releases live in memory and reset on a full reload.

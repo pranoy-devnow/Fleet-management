@@ -1,47 +1,37 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Upload } from "lucide-react";
-import Link from "next/link";
+import { useState } from "react";
 
-import { FirmwareListToolbar } from "@/features/firmware/components/firmware-list-toolbar";
-import { ReleaseChip } from "@/features/firmware/components/release-chip";
-import { filterFirmwareReleases, hasActiveFirmwareFilters } from "@/features/firmware/lib/filter-releases";
-import { emptyFirmwareFilters } from "@/features/firmware/lib/firmware-filters";
-import { countActiveReleases, listFirmwareReleases } from "@/features/firmware/repositories/firmware-repository";
-import type { FirmwareFilters } from "@/features/firmware/types";
+import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
+import { filterFirmwareReleases, hasActiveFirmwareSearch } from "@/features/firmware/lib/filter-releases";
+import { formatFirmwareHistorySubtitle } from "@/features/firmware/lib/format-firmware-history";
 import { AppShell } from "@/features/shell/app-shell";
-import { BackLink } from "@/features/shell/back-link";
 import { GroupedList, GroupedListEmpty, GroupedListRow } from "@/features/shell/grouped-list";
-import { PrimaryActionButton } from "@/features/shell/primary-action-button";
+import { SearchField } from "@/features/shell/search-field";
 
 /**
- * Grouped firmware history for Medela staff.
+ * Grouped firmware history for Medela staff. Rows show device type and region
+ * from the same catalog the publish form writes.
  */
 export function FirmwareHistoryTable() {
-  const releases = useMemo(() => listFirmwareReleases(), []);
-  const [filters, setFilters] = useState<FirmwareFilters>(emptyFirmwareFilters);
-  const rows = filterFirmwareReleases(releases, filters);
-  const active = hasActiveFirmwareFilters(filters);
+  const { releases } = useFirmwareReleases();
+  const [search, setSearch] = useState("");
+  const rows = filterFirmwareReleases(releases, search);
+  const active = hasActiveFirmwareSearch(search);
 
   return (
-    <AppShell
-      title="Firmware"
-      subtitle={`${countActiveReleases()} active · ${rows.length} shown`}
-      headerAction={
-        <PrimaryActionButton
-          render={<Link href="/internal/firmware/upload" />}
-          nativeButton={false}
-          className="gap-2"
-        >
-          <Upload size={15} />
-          Upload firmware
-        </PrimaryActionButton>
-      }
-    >
-      <BackLink href="/internal" label="Overview" />
-      <FirmwareListToolbar filters={filters} onFiltersChange={setFilters} />
+    <AppShell fill fleetNav>
       <GroupedList
+        scroll
+        header={
+          <div className="border-b border-black/6 px-5 py-3">
+            <SearchField
+              value={search}
+              onChange={setSearch}
+              placeholder="Search version, device type, or notes"
+            />
+          </div>
+        }
         footer={
           <span role="status">
             {`Showing ${rows.length} of ${releases.length} releases${active ? " · filtered" : ""}`}
@@ -53,11 +43,10 @@ export function FirmwareHistoryTable() {
         ) : (
           rows.map((release, index) => (
             <GroupedListRow
-              key={`${release.version}-${release.model}-${index}`}
-              href={`/internal/firmware/${release.version}?model=${encodeURIComponent(release.model)}`}
+              key={`${release.version}-${release.deviceType}-${index}`}
+              href={`/internal/firmware/${release.version}?deviceType=${encodeURIComponent(release.deviceType)}`}
               title={release.version}
-              subtitle={`${release.model} · ${release.region} · ${release.date} · ${release.notes}`}
-              trailing={<ReleaseChip status={release.status} />}
+              subtitle={formatFirmwareHistorySubtitle(release)}
             />
           ))
         )}

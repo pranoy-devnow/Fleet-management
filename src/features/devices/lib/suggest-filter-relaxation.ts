@@ -20,13 +20,7 @@ export type FilterRelaxation = {
  * typed query is the most intentional filter, so it is the last one we suggest
  * giving up.
  */
-const RELAXATION_ORDER: readonly DeviceFilterKey[] = [
-  "region",
-  "model",
-  "hospital",
-  "status",
-  "search",
-];
+const RELAXATION_ORDER: readonly DeviceFilterKey[] = ["status", "search"];
 
 /**
  * Finds the one filter whose removal reveals the most devices, for the empty
