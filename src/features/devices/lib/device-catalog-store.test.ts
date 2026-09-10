@@ -35,7 +35,7 @@ describe("createDeviceCatalogStore", () => {
 
     const updated = store.applyUpdate(
       "KF-1",
-      { version: "v2.4.0", notes: "Battery" },
+      { version: "v2.4.0", notes: "Battery", uploadedBy: "Sarah Chen" },
       new Date("2026-09-10T12:00:00.000Z"),
     );
 
@@ -47,6 +47,8 @@ describe("createDeviceCatalogStore", () => {
 
   it("returns null when the device is missing", () => {
     const store = createDeviceCatalogStore([device], releases);
-    expect(store.applyUpdate("nope", { version: "v2.4.0", notes: "Battery" })).toBeNull();
+    expect(
+      store.applyUpdate("nope", { version: "v2.4.0", notes: "Battery", uploadedBy: "Sarah Chen" }),
+    ).toBeNull();
   });
 });
