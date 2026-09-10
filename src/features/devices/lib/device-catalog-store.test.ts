@@ -17,7 +17,7 @@ const device: WorldDevice = {
 };
 
 const releases: FirmwareRelease[] = [
-  { version: "v2.3.1", date: "2025-09-04", region: "Europe", deviceType: "Freestyle Hands-free", status: "superseded", devices: 1, notes: "EU patch" },
+  { version: "v2.3.1", date: "2025-09-04", region: "Europe", deviceType: "Freestyle Hands-free", status: "superseded", devices: 1, notes: "EU patch", uploadedBy: "Sarah Chen" },
 ];
 
 describe("createDeviceCatalogStore", () => {

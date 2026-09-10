@@ -5,30 +5,22 @@ import { Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Textarea } from "@/components/ui/textarea";
-import {
-  DEPLOY_TYPE_OPTIONS,
-  FIRMWARE_DEVICE_TYPE_OPTIONS,
-  FIRMWARE_REGION_OPTIONS,
-} from "@/features/firmware/constants";
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
 import { publishFirmwareSchema } from "@/features/firmware/schemas";
 import { AppShell } from "@/features/shell/app-shell";
 import { FormField } from "@/features/shell/form-field";
-import { NativeSelect } from "@/features/shell/native-select";
 import { Panel } from "@/features/shell/panel";
 import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 import { parseFormData } from "@/lib/parse-form";
 
 /**
- * Firmware publish form: file dropzone, release notes, target, and scheduler.
- * Region and device type are written onto the release history reads.
+ * Firmware publish form: file dropzone and release notes.
  */
 export function UploadFirmwareForm() {
   const router = useRouter();
   const { publish } = useFirmwareReleases();
   const [dragging, setDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
-  const [deployType, setDeployType] = useState("immediate");
   const [error, setError] = useState<string | null>(null);
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -94,44 +86,6 @@ export function UploadFirmwareForm() {
               />
             </div>
           </div>
-        </Panel>
-
-        <Panel className="p-6">
-          <h3 className="mb-4 font-semibold text-foreground">Deployment Target</h3>
-          <div className="flex flex-col gap-4">
-            <NativeSelect
-              label="Region"
-              name="region"
-              defaultValue="All regions"
-              options={FIRMWARE_REGION_OPTIONS}
-            />
-            <NativeSelect
-              label="Device type"
-              name="deviceType"
-              defaultValue="All device types"
-              options={FIRMWARE_DEVICE_TYPE_OPTIONS}
-            />
-          </div>
-        </Panel>
-
-        <Panel className="p-6">
-          <h3 className="mb-1 font-semibold text-foreground">Scheduler</h3>
-          <p className="mb-4 text-xs text-muted-foreground">Set when the firmware update should activate on target devices.</p>
-          <NativeSelect
-            label="Deployment type"
-            value={deployType}
-            onChange={setDeployType}
-            options={DEPLOY_TYPE_OPTIONS}
-          />
-          {deployType === "immediate" ? (
-            <p className="mt-1 text-xs text-muted-foreground">The update will be pushed to target devices as soon as you click Publish Update.</p>
-          ) : null}
-          {deployType === "scheduled" ? (
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <FormField label="Activation date" name="date" type="date" defaultValue="2026-01-15" />
-              <FormField label="Activation time (UTC)" name="time" type="time" defaultValue="02:00" />
-            </div>
-          ) : null}
         </Panel>
 
         {error ? (

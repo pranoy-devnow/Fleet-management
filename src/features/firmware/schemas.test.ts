@@ -3,12 +3,10 @@ import { describe, expect, it } from "vitest";
 import { publishFirmwareSchema } from "./schemas";
 
 describe("publishFirmwareSchema", () => {
-  it("accepts a region and device type from the shared options", () => {
+  it("accepts a version and notes", () => {
     const result = publishFirmwareSchema.safeParse({
       version: "v2.5.0",
       notes: "Notes",
-      region: "Europe",
-      deviceType: "Symphony",
     });
 
     expect(result.success).toBe(true);
@@ -18,8 +16,6 @@ describe("publishFirmwareSchema", () => {
     const result = publishFirmwareSchema.safeParse({
       version: "   ",
       notes: "Notes",
-      region: "Europe",
-      deviceType: "Symphony",
     });
 
     expect(result.success).toBe(false);
@@ -28,14 +24,15 @@ describe("publishFirmwareSchema", () => {
     }
   });
 
-  it("rejects a hospital field as the device target", () => {
+  it("rejects blank notes", () => {
     const result = publishFirmwareSchema.safeParse({
       version: "v2.5.0",
-      notes: "Notes",
-      region: "Europe",
-      deviceType: "Charité — NICU Ward 3",
+      notes: "   ",
     });
 
     expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]?.message).toBe("Enter release notes");
+    }
   });
 });

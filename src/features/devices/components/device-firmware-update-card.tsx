@@ -1,39 +1,41 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
+import { DeviceFirmwareVersionSelect } from "@/features/devices/components/device-firmware-version-select";
 import { DeviceUpdateProgress } from "@/features/devices/components/device-update-progress";
 import { useDeviceUpdateRun } from "@/features/devices/hooks/use-device-update-run";
 import type { FirmwareUpdateOffer, WorldDevice } from "@/features/devices/types";
-import { InfoTooltip } from "@/features/shell/info-tooltip";
 import { PrimaryActionButton } from "@/features/shell/primary-action-button";
 
 /**
- * Update action that sits inside the device card: next version, details, start.
+ * Update action that sits inside the device card: version list, details, start.
  *
  * @param device - Device being updated
- * @param offer - Recommended package, or null when already current
+ * @param offers - Installable packages, newest first
  * @param onFinished - Called once the prototype install completes
  */
 export function DeviceFirmwareUpdateCard({
   device,
-  offer,
+  offers,
   onFinished,
 }: {
   device: WorldDevice;
-  offer: FirmwareUpdateOffer | null;
+  offers: FirmwareUpdateOffer[];
   onFinished: (offer: FirmwareUpdateOffer) => void;
 }) {
-  const offerRef = useRef(offer);
-  offerRef.current = offer;
+  const [selectedVersion, setSelectedVersion] = useState(offers[0]?.version ?? "");
+  const selected = offers.find((offer) => offer.version === selectedVersion) ?? offers[0] ?? null;
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
   const { phase, progress, stage, start } = useDeviceUpdateRun(() => {
-    const finished = offerRef.current;
+    const finished = selectedRef.current;
     if (finished) onFinished(finished);
   });
 
   const startLabel = device.status === "failed" ? "Retry update" : "Start update";
 
-  if (phase === "idle" && !offer) {
+  if (phase === "idle" && !selected) {
     return (
       <p className="text-sm text-muted-foreground">This device is on the latest firmware.</p>
     );
@@ -47,25 +49,16 @@ export function DeviceFirmwareUpdateCard({
           : "rounded-xl bg-black/4 px-4 py-4"
       }
     >
-      {phase === "idle" && offer ? (
+      {phase === "idle" && selected ? (
         <div className="flex flex-col gap-3">
           <p className="text-xs font-medium text-muted-foreground">Available update</p>
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5">
-              <p className="text-sm font-semibold text-foreground">{offer.version}</p>
-              <InfoTooltip label="Update details">
-                <dl className="space-y-1.5 text-sm">
-                  <div className="flex gap-4">
-                    <dt className="w-16 shrink-0 text-muted-foreground">Version</dt>
-                    <dd className="font-medium text-foreground">{offer.version}</dd>
-                  </div>
-                  <div className="flex gap-4">
-                    <dt className="w-16 shrink-0 text-muted-foreground">Details</dt>
-                    <dd className="text-foreground">{offer.notes}</dd>
-                  </div>
-                </dl>
-              </InfoTooltip>
-            </div>
+          <div className="flex items-end justify-between gap-3">
+            <DeviceFirmwareVersionSelect
+              offers={offers}
+              value={selected.version}
+              onChange={setSelectedVersion}
+              selected={selected}
+            />
             <PrimaryActionButton type="button" onClick={start} className="h-10 shrink-0 px-4 text-sm">
               {startLabel}
             </PrimaryActionButton>

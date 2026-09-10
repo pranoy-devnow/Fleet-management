@@ -1,7 +1,7 @@
 import type { FirmwareRelease } from "../types";
 
 /**
- * Returns releases whose version, notes, device type, or region contain the
+ * Returns releases whose version, notes, or uploader name contain the
  * search text. Blank or whitespace-only search returns every release.
  *
  * @param releases - Published firmware packages
@@ -29,7 +29,6 @@ function matchesSearch(release: FirmwareRelease, search: string): boolean {
   return (
     release.version.toLowerCase().includes(search) ||
     release.notes.toLowerCase().includes(search) ||
-    release.deviceType.toLowerCase().includes(search) ||
-    release.region.toLowerCase().includes(search)
+    release.uploadedBy.toLowerCase().includes(search)
   );
 }

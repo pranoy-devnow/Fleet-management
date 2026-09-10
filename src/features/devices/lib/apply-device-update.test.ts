@@ -15,10 +15,14 @@ const device: WorldDevice = {
 };
 
 const log: DeviceFirmwareLogEntry[] = [
-  { version: "v2.3.1", installedOn: "2025-09-04", notes: "EU patch" },
+  { version: "v2.3.1", installedOn: "2025-09-04", notes: "EU patch", uploadedBy: "Tobias Keller" },
 ];
 
-const offer = { version: "v2.4.0", notes: "Battery optimisation" };
+const offer = {
+  version: "v2.4.0",
+  notes: "Battery optimisation",
+  uploadedBy: "Sarah Chen",
+};
 
 describe("applyDeviceFirmwareUpdate", () => {
   it("sets the device current and prepends the new install", () => {
@@ -29,6 +33,7 @@ describe("applyDeviceFirmwareUpdate", () => {
       version: "v2.4.0",
       installedOn: "2026-09-10",
       notes: "Battery optimisation",
+      uploadedBy: "Sarah Chen",
     });
     expect(result.log).toHaveLength(2);
   });

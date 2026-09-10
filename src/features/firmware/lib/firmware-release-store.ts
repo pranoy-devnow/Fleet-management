@@ -41,10 +41,15 @@ export function createFirmwareReleaseStore(
      * Prepends a published release and notifies subscribers.
      *
      * @param input - Validated publish-form fields
+     * @param uploadedBy - Display name of the staff member who published
      * @param now - Clock for the release date; inject in tests
      */
-    publish(input: PublishFirmwareInput, now: Date = new Date()): FirmwareRelease {
-      const release = createPublishedRelease(input, now);
+    publish(
+      input: PublishFirmwareInput,
+      uploadedBy: string,
+      now: Date = new Date(),
+    ): FirmwareRelease {
+      const release = createPublishedRelease(input, now, uploadedBy);
       releases = [release, ...releases];
       emit();
       return release;

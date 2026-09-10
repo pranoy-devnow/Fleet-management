@@ -6,7 +6,8 @@ Fleet inventory and status chips for Medela Internal staff.
 
 - `listWorldDevices` / `getWorldDeviceById` — internal device table
 - `filterWorldDevices` — table status and search
-- `recommendedFirmwareUpdate` — next package for a device from the firmware catalog
+- `availableFirmwareUpdates` — installable packages for a device (dropdown on the detail card)
+- `recommendedFirmwareUpdate` — newest package newer than what is already installed
 - `deviceCatalogStore` — live fleet and per-device install logs
 - `StatusChip` — use anywhere a device status appears
 
@@ -19,7 +20,7 @@ Fleet inventory and status chips for Medela Internal staff.
 
 `DeviceListToolbar` composes the shell's search field and status segmented control. `DeviceListEmpty` turns a `suggestFilterRelaxation` result into a one-click way out.
 
-The internal overview (`/internal`) uses `AppShell fill fleetNav` for Devices, Firmware history, and Upload firmware. Filters and rows share a `GroupedList` card so only the rows scroll. The Devices tab count follows the list filters via `fleetNavCountStore`. `/internal/devices` redirects here, including a `?status=` filter. Device rows still open `/internal/devices/[id]`. Identity and the next firmware share one card; firmware history is a second card with the title separated from the rows.
+The internal overview (`/internal`) uses `AppShell fill fleetNav` for Devices, Firmware history, and Upload firmware. Filters and rows share a `GroupedList` card so only the rows scroll. The Devices tab count follows the list filters via `fleetNavCountStore`. `/internal/devices` redirects here, including a `?status=` filter. Device rows still open `/internal/devices/[id]`. Identity and the next firmware share one card; firmware history is a second card with the title separated from the rows. History rows use the same uploader credit as the firmware catalog, with notes shortened to the first clause.
 
 ## Gotchas
 

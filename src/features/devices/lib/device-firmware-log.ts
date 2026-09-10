@@ -30,6 +30,7 @@ export function buildDeviceFirmwareLog(
       version: release.version,
       installedOn: release.date,
       notes: release.notes,
+      uploadedBy: release.uploadedBy,
     });
   }
 

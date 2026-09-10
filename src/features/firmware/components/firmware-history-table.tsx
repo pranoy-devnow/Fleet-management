@@ -4,14 +4,14 @@ import { useState } from "react";
 
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
 import { filterFirmwareReleases, hasActiveFirmwareSearch } from "@/features/firmware/lib/filter-releases";
-import { formatFirmwareHistorySubtitle } from "@/features/firmware/lib/format-firmware-history";
+import { FirmwareHistorySubtitle } from "@/features/firmware/components/firmware-history-subtitle";
 import { AppShell } from "@/features/shell/app-shell";
 import { GroupedList, GroupedListEmpty, GroupedListRow } from "@/features/shell/grouped-list";
 import { SearchField } from "@/features/shell/search-field";
 
 /**
- * Grouped firmware history for Medela staff. Rows show device type and region
- * from the same catalog the publish form writes.
+ * Grouped firmware history for Medela staff. Rows show release notes and who
+ * uploaded the package.
  */
 export function FirmwareHistoryTable() {
   const { releases } = useFirmwareReleases();
@@ -28,7 +28,7 @@ export function FirmwareHistoryTable() {
             <SearchField
               value={search}
               onChange={setSearch}
-              placeholder="Search version, device type, or notes"
+              placeholder="Search version, notes, or uploader"
             />
           </div>
         }
@@ -46,7 +46,9 @@ export function FirmwareHistoryTable() {
               key={`${release.version}-${release.deviceType}-${index}`}
               href={`/internal/firmware/${release.version}?deviceType=${encodeURIComponent(release.deviceType)}`}
               title={release.version}
-              subtitle={formatFirmwareHistorySubtitle(release)}
+              subtitle={
+                <FirmwareHistorySubtitle notes={release.notes} uploadedBy={release.uploadedBy} />
+              }
             />
           ))
         )}

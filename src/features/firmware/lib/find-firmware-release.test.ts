@@ -4,8 +4,8 @@ import type { FirmwareRelease } from "../types";
 import { findFirmwareRelease } from "./find-firmware-release";
 
 const releases: FirmwareRelease[] = [
-  { version: "v2.4.0", date: "2025-12-10", region: "All regions", deviceType: "Symphony", status: "active", devices: 10, notes: "Battery" },
-  { version: "v2.4.0", date: "2025-12-10", region: "Europe", deviceType: "Swing Maxi", status: "active", devices: 4, notes: "EU" },
+  { version: "v2.4.0", date: "2025-12-10", region: "All regions", deviceType: "Symphony", status: "active", devices: 10, notes: "Battery", uploadedBy: "Sarah Chen" },
+  { version: "v2.4.0", date: "2025-12-10", region: "Europe", deviceType: "Swing Maxi", status: "active", devices: 4, notes: "EU", uploadedBy: "Sarah Chen" },
 ];
 
 describe("findFirmwareRelease", () => {

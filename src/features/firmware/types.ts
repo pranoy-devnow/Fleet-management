@@ -14,6 +14,6 @@ export type FirmwareRelease = {
   status: FirmwareReleaseStatus;
   devices: number;
   notes: string;
+  /** Display name of the staff member who published this release. */
+  uploadedBy: string;
 };
-
-export type DeployType = "immediate" | "scheduled";

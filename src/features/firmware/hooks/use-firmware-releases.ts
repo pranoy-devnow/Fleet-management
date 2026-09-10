@@ -2,6 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
+import { getAccountUser } from "@/features/account/lib/current-user";
 import { firmwareReleaseStore } from "@/features/firmware/lib/firmware-release-store";
 import type { PublishFirmwareInput } from "@/features/firmware/schemas";
 import type { FirmwareRelease } from "@/features/firmware/types";
@@ -19,7 +20,8 @@ export function useFirmwareReleases(): {
     firmwareReleaseStore.getSnapshot,
   );
   const publish = useCallback(
-    (input: PublishFirmwareInput) => firmwareReleaseStore.publish(input),
+    (input: PublishFirmwareInput) =>
+      firmwareReleaseStore.publish(input, getAccountUser().name),
     [],
   );
 

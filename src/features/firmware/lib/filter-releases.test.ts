@@ -4,8 +4,8 @@ import type { FirmwareRelease } from "../types";
 import { filterFirmwareReleases, hasActiveFirmwareSearch } from "./filter-releases";
 
 const releases: FirmwareRelease[] = [
-  { version: "v2.4.0", date: "2025-12-10", region: "All regions", deviceType: "Symphony", status: "active", devices: 10, notes: "Battery optimisation" },
-  { version: "v2.0.0", date: "2024-06-01", region: "Europe", deviceType: "Swing Maxi", status: "recalled", devices: 0, notes: "Do not deploy" },
+  { version: "v2.4.0", date: "2025-12-10", region: "All regions", deviceType: "Symphony", status: "active", devices: 10, notes: "Battery optimisation", uploadedBy: "Sarah Chen" },
+  { version: "v2.0.0", date: "2024-06-01", region: "Europe", deviceType: "Swing Maxi", status: "recalled", devices: 0, notes: "Do not deploy", uploadedBy: "Tobias Keller" },
 ];
 
 describe("filterFirmwareReleases", () => {
@@ -23,14 +23,8 @@ describe("filterFirmwareReleases", () => {
     ]);
   });
 
-  it("matches device type", () => {
-    expect(filterFirmwareReleases(releases, "swing").map((item) => item.version)).toEqual([
-      "v2.0.0",
-    ]);
-  });
-
-  it("matches region", () => {
-    expect(filterFirmwareReleases(releases, "europe").map((item) => item.version)).toEqual([
+  it("matches the uploader name", () => {
+    expect(filterFirmwareReleases(releases, "tobias").map((item) => item.version)).toEqual([
       "v2.0.0",
     ]);
   });

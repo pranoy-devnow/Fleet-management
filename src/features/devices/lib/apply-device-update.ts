@@ -26,6 +26,7 @@ export function applyDeviceFirmwareUpdate(
         version: offer.version,
         installedOn: now.toISOString().slice(0, 10),
         notes: offer.notes,
+        uploadedBy: offer.uploadedBy,
       },
       ...log,
     ],

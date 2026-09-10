@@ -31,10 +31,12 @@ export type DeviceFirmwareLogEntry = {
   version: string;
   installedOn: string;
   notes: string;
+  uploadedBy: string;
 };
 
 /** The firmware a device should receive next. */
 export type FirmwareUpdateOffer = {
   version: string;
   notes: string;
+  uploadedBy: string;
 };

@@ -5,7 +5,7 @@ import { DeviceFirmwareLogList } from "@/features/devices/components/device-firm
 import { DeviceFirmwareUpdateCard } from "@/features/devices/components/device-firmware-update-card";
 import { StatusChip } from "@/features/devices/components/status-chip";
 import { useDeviceCatalog } from "@/features/devices/hooks/use-device-catalog";
-import { recommendedFirmwareUpdate } from "@/features/devices/lib/recommended-update";
+import { availableFirmwareUpdates } from "@/features/devices/lib/available-updates";
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
 import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
@@ -31,7 +31,7 @@ export function DeviceDetailScreen({ deviceId }: { deviceId: string }) {
     );
   }
 
-  const offer = recommendedFirmwareUpdate(device, releases);
+  const offers = availableFirmwareUpdates(device, releases);
 
   return (
     <AppShell title="Device Status Detail">
@@ -51,7 +51,7 @@ export function DeviceDetailScreen({ deviceId }: { deviceId: string }) {
           <div className="mt-5 border-t border-black/6 pt-5">
             <DeviceFirmwareUpdateCard
               device={device}
-              offer={offer}
+              offers={offers}
               onFinished={(finished) => {
                 applyUpdate(device.id, finished);
               }}

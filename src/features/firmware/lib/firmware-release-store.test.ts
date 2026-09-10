@@ -4,7 +4,7 @@ import type { FirmwareRelease } from "../types";
 import { createFirmwareReleaseStore } from "./firmware-release-store";
 
 const seed: FirmwareRelease[] = [
-  { version: "v2.4.0", date: "2025-12-10", region: "All regions", deviceType: "Symphony", status: "active", devices: 10, notes: "Battery" },
+  { version: "v2.4.0", date: "2025-12-10", region: "All regions", deviceType: "Symphony", status: "active", devices: 10, notes: "Battery", uploadedBy: "Sarah Chen" },
 ];
 
 describe("createFirmwareReleaseStore", () => {
@@ -13,7 +13,7 @@ describe("createFirmwareReleaseStore", () => {
     expect(store.getSnapshot()).toHaveLength(1);
   });
 
-  it("prepends a published release with the chosen target", () => {
+  it("prepends a published release", () => {
     const store = createFirmwareReleaseStore(seed);
     let heard = 0;
     store.subscribe(() => {
@@ -24,15 +24,14 @@ describe("createFirmwareReleaseStore", () => {
       {
         version: "v2.5.0",
         notes: "New radio",
-        region: "United States",
-        deviceType: "Swing Maxi",
       },
+      "Sarah Chen",
       new Date("2026-09-10T08:00:00.000Z"),
     );
 
     expect(heard).toBe(1);
-    expect(published.region).toBe("United States");
-    expect(published.deviceType).toBe("Swing Maxi");
+    expect(published.uploadedBy).toBe("Sarah Chen");
+    expect(published.version).toBe("v2.5.0");
     expect(store.getSnapshot()[0]).toEqual(published);
     expect(store.getSnapshot()).toHaveLength(2);
   });
@@ -46,7 +45,8 @@ describe("createFirmwareReleaseStore", () => {
 
     stop();
     store.publish(
-      { version: "v2.5.1", notes: "Patch", region: "Europe", deviceType: "Symphony" },
+      { version: "v2.5.1", notes: "Patch" },
+      "Sarah Chen",
       new Date("2026-09-10T08:00:00.000Z"),
     );
 

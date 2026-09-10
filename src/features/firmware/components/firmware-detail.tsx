@@ -2,7 +2,6 @@
 
 import { AlertTriangle } from "lucide-react";
 
-import { DEPLOY_LABELS } from "@/features/firmware/constants";
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
 import { findFirmwareRelease } from "@/features/firmware/lib/find-firmware-release";
 import { AppShell } from "@/features/shell/app-shell";
@@ -10,8 +9,7 @@ import { BackLink } from "@/features/shell/back-link";
 import { Panel } from "@/features/shell/panel";
 
 /**
- * Read-only firmware release detail. Target fields match the publish form:
- * region and device type, not hospital.
+ * Read-only firmware release detail: version and notes.
  *
  * @param version - Version label from the route
  * @param deviceType - Device type from the query string
@@ -56,35 +54,19 @@ export function FirmwareDetail({
         </div>
       ) : null}
 
-      <div className="flex flex-col gap-5">
-        <Panel className="p-6">
-          <h3 className="mb-4 font-semibold text-foreground">Release Details</h3>
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-foreground">Version label</label>
-              <span className="font-mono text-sm text-foreground">{release.version}</span>
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-foreground">Release notes</label>
-              <p className="text-sm leading-relaxed text-foreground">{release.notes}</p>
-            </div>
+      <Panel className="p-6">
+        <h3 className="mb-4 font-semibold text-foreground">Release Details</h3>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-semibold text-foreground">Version label</label>
+            <span className="font-mono text-sm text-foreground">{release.version}</span>
           </div>
-        </Panel>
-
-        <Panel className="p-6">
-          <h3 className="mb-4 font-semibold text-foreground">Deployment Target</h3>
-          <div className="flex flex-col gap-3 text-sm text-foreground">
-            <div>Region: {release.region}</div>
-            <div>Device type: {release.deviceType}</div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-semibold text-foreground">Release notes</label>
+            <p className="text-sm leading-relaxed text-foreground">{release.notes}</p>
           </div>
-        </Panel>
-
-        <Panel className="p-6">
-          <h3 className="mb-1 font-semibold text-foreground">Scheduler</h3>
-          <p className="mb-4 text-xs text-muted-foreground">Set when the firmware update should activate on target devices.</p>
-          <span className="text-sm text-foreground">{DEPLOY_LABELS.immediate}</span>
-        </Panel>
-      </div>
+        </div>
+      </Panel>
     </AppShell>
   );
 }

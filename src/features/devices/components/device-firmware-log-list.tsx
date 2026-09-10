@@ -1,4 +1,6 @@
 import type { DeviceFirmwareLogEntry } from "@/features/devices/types";
+import { shortenReleaseNotes } from "@/features/devices/lib/shorten-release-notes";
+import { FirmwareHistorySubtitle } from "@/features/firmware/components/firmware-history-subtitle";
 import { Panel } from "@/features/shell/panel";
 
 /**
@@ -26,7 +28,12 @@ export function DeviceFirmwareLogList({ entries }: { entries: readonly DeviceFir
                 <span className="font-mono text-sm font-semibold text-foreground">{entry.version}</span>
                 <span className="text-xs text-muted-foreground">{entry.installedOn}</span>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">{entry.notes}</p>
+              <p className="mt-1 truncate text-sm text-muted-foreground">
+                <FirmwareHistorySubtitle
+                  notes={shortenReleaseNotes(entry.notes)}
+                  uploadedBy={entry.uploadedBy}
+                />
+              </p>
             </li>
           ))}
         </ol>

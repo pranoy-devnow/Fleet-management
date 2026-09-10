@@ -10,11 +10,9 @@ Release history and the publish form.
 
 `AppShell fleetNav` renders Devices / Firmware history / Upload firmware in the same slot on every tab screen, including upload. List pages also pass `fill` so only the rows scroll.
 
-History has a search field (`filterFirmwareReleases` matches version, notes, device type, and region). Rows do not show a status chip. There is no sort control; history is already newest-first.
+History has a search field (`filterFirmwareReleases` matches version, notes, and uploader). Rows show notes and **Uploaded by:** plus the staff name in bold (`FirmwareHistorySubtitle`, also used on a device's install history). There is no sort control; history is already newest-first.
 
-### Deployment target
-
-Publish, history, and detail share one catalog (`firmwareReleaseStore`) and the same target fields: **region** and **device type**. Hospital is not a firmware target. Option lists live in `FIRMWARE_REGION_VALUES` / `FIRMWARE_DEVICE_TYPE_VALUES`.
+Publish collects version and notes only. New releases are stored as all regions and all device types so history and device-update matching still have a catalog row.
 
 ## Gotchas
 
