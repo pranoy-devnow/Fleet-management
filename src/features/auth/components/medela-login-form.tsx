@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AuthHeading } from "@/features/shell/auth-heading";
 import { AuthShell } from "@/features/shell/auth-shell";
 import { FormField } from "@/features/shell/form-field";
 import { PrimaryActionButton } from "@/features/shell/primary-action-button";
@@ -23,7 +22,6 @@ export function MedelaLoginForm() {
 
   return (
     <AuthShell>
-      <AuthHeading title="Medela Internal" subtitle="Sign in with your Medela work account" />
       <form className="flex flex-col gap-4" onSubmit={onSubmit} noValidate>
         <FormField label="Work email" name="email" type="email" placeholder="name@medela.com" />
         <div className="flex flex-col gap-1.5">
@@ -51,9 +49,6 @@ export function MedelaLoginForm() {
             First time here? Register
           </Link>
         </div>
-        <p className="mt-2 text-center text-xs text-muted-foreground">
-          Prototype — credentials not required
-        </p>
       </form>
     </AuthShell>
   );
