@@ -4,7 +4,7 @@ Shared chrome: brand-yellow header, grouped lists, list filter controls, auth fr
 
 ## How to use
 
-Wrap authenticated pages in `AppShell`. Use `variant="form"` on firmware publish/edit to show the sign-off card. Use `fill` on list pages so chrome stays put and the list fills the leftover laptop height. Pass `fleetNav` on the three fleet screens so `FleetNavTabs` sits in the same slot above the page; that also locks the viewport so upload uses the same main padding as the lists. Pass `header` on `GroupedList` when title, actions, or filters should sit inside the same card as the rows.
+Wrap authenticated pages in `AppShell`. Use `variant="form"` on firmware publish and detail to constrain the column. Render `SignOffCard` on those pages yourself: publish uses authorising copy, detail uses uploaded-by copy. Use `fill` on list pages so chrome stays put and the list fills the leftover laptop height. Pass `fleetNav` on the three fleet screens so `FleetNavTabs` sits in the same slot above the page; that also locks the viewport so upload uses the same main padding as the lists. Pass `header` on `GroupedList` when title, actions, or filters should sit inside the same card as the rows.
 
 `FleetNavTabs` is the Devices / Firmware history / Upload firmware switcher. `resolveFleetTab` picks the selected tab from the path. The Devices tab count lives in `fleetNavCountStore` so the list can update a badge that AppShell renders.
 

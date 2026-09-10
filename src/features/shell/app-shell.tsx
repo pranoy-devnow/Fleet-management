@@ -5,8 +5,6 @@ import {
   shouldLockAppShell,
   type AppShellVariant,
 } from "@/features/shell/lib/app-shell-layout";
-import { SignOffCard } from "@/features/shell/sign-off-card";
-
 type AppShellProps = {
   children: React.ReactNode;
   title?: React.ReactNode;
@@ -26,7 +24,7 @@ type AppShellProps = {
 };
 
 /**
- * Authenticated chrome: frosted toolbar, large title, optional firmware sign-off.
+ * Authenticated chrome: frosted toolbar, large title, optional form column.
  */
 export function AppShell({
   children,
@@ -63,7 +61,6 @@ export function AppShell({
         )}
         <div className={appShellContentClass(variant, lockViewport)}>
           {children}
-          {variant === "form" ? <SignOffCard /> : null}
         </div>
       </main>
     </div>

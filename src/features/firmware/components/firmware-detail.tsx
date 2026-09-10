@@ -4,9 +4,11 @@ import { AlertTriangle } from "lucide-react";
 
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
 import { findFirmwareRelease } from "@/features/firmware/lib/find-firmware-release";
+import { signOffPersonFromName } from "@/features/firmware/lib/sign-off-person";
 import { AppShell } from "@/features/shell/app-shell";
 import { BackLink } from "@/features/shell/back-link";
 import { Panel } from "@/features/shell/panel";
+import { SignOffCard } from "@/features/shell/sign-off-card";
 
 /**
  * Read-only firmware release detail: version and notes.
@@ -67,6 +69,13 @@ export function FirmwareDetail({
           </div>
         </div>
       </Panel>
+      <SignOffCard
+        title="Uploaded by"
+        description="This release was uploaded by the person shown below."
+        person={signOffPersonFromName(release.uploadedBy)}
+        badge="Authorised"
+        footer={`Uploaded on ${release.date}`}
+      />
     </AppShell>
   );
 }

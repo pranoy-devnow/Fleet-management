@@ -6,7 +6,7 @@ Release history and the publish form.
 
 - `/internal/firmware` — history table
 - `/internal/firmware/upload` — publish form; Publish Update prepends a release and returns to history
-- `/internal/firmware/[version]?deviceType=` — read-only detail (version is not unique without device type)
+- `/internal/firmware/[version]?deviceType=` — read-only detail (version is not unique without device type). The card under the notes says who uploaded the release.
 
 `AppShell fleetNav` renders Devices / Firmware history / Upload firmware in the same slot on every tab screen, including upload. List pages also pass `fill` so only the rows scroll.
 

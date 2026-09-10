@@ -5,12 +5,15 @@ import { Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Textarea } from "@/components/ui/textarea";
+import { getAccountUser } from "@/features/account/lib/current-user";
 import { useFirmwareReleases } from "@/features/firmware/hooks/use-firmware-releases";
+import { signOffPersonFromName } from "@/features/firmware/lib/sign-off-person";
 import { publishFirmwareSchema } from "@/features/firmware/schemas";
 import { AppShell } from "@/features/shell/app-shell";
 import { FormField } from "@/features/shell/form-field";
 import { Panel } from "@/features/shell/panel";
 import { PrimaryActionButton } from "@/features/shell/primary-action-button";
+import { SignOffCard } from "@/features/shell/sign-off-card";
 import { parseFormData } from "@/lib/parse-form";
 
 /**
@@ -98,6 +101,18 @@ export function UploadFirmwareForm() {
           Publish Update
         </PrimaryActionButton>
       </form>
+      <SignOffCard
+        title="Sign-off"
+        description="By publishing this release, your name will be recorded as the person who uploaded it."
+        person={signOffPersonFromName(getAccountUser().name)}
+        badge="Authorised"
+        footer={
+          <>
+            Sign-off timestamp will be recorded as:{" "}
+            <span className="font-mono">{new Date().toISOString().replace("T", " ").slice(0, 19)} UTC</span>
+          </>
+        }
+      />
     </AppShell>
   );
 }
